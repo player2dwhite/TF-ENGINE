@@ -1,59 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>TF-Engine — Components Showcase</title>
+<title>TF-Engine — Components Demo</title>
 
 <link rel="stylesheet" href="../css/tf-engine.css">
 
 <style>
 
 body{
-    background:#f4f4f5;
+    background:#ffffff;
     padding:40px;
     font-family:Arial, Helvetica, sans-serif;
 }
 
 .tf-engine{
-    max-width:1100px;
+    max-width:1000px;
     margin:auto;
 }
 
 .demo-section{
-    margin:45px 0;
-}
-
-.demo-title{
-    margin-bottom:15px;
+    margin:40px 0;
 }
 
 .demo-grid{
     display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+    grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
     gap:20px;
 }
 
-.demo-row{
-    display:flex;
-    flex-wrap:wrap;
-    gap:12px;
-    align-items:center;
-}
-
-.code-box{
-    background:#111;
-    color:#ddd;
-    padding:20px;
-    border-radius:12px;
-    font-family:monospace;
-    overflow:auto;
-}
-
-.hero-icon{
-    font-size:48px;
+.demo-title{
+    margin-bottom:15px;
 }
 
 </style>
@@ -64,110 +44,23 @@ body{
 <body>
 
 
-<div class="tf-engine tf-theme-light">
+<div class="tf-engine">
 
 
-<!-- HERO -->
+<div class="tf-hero">
 
-<section class="tf-hero">
-
-<div class="hero-icon">
-⚡
-</div>
-
-<h1>
-TF-Engine
-</h1>
+<h1>TF-Engine</h1>
 
 <p>
-A pure CSS design system for Fandom and MediaWiki wikis.
-Create modern interfaces with reusable <code>tf-*</code> classes.
+CSS design system for Fandom and MediaWiki projects.
+Reusable components built with pure CSS and <code>tf-*</code> classes.
 </p>
 
-<div class="demo-row">
-
-<span class="tf-badge tf-accent">
-CSS Framework
-</span>
-
-<span class="tf-badge tf-pl">
-MIT License
-</span>
-
-<span class="tf-badge">
-MediaWiki Ready
-</span>
-
 </div>
 
-</section>
-
-
-
-<!-- STATS -->
-
-<section class="demo-section">
-
-<h2 class="demo-title">
-System Overview
-</h2>
-
-
-<div class="demo-grid">
-
-
-<div class="tf-stat">
-
-<span class="tf-stat-value">
-50+
-</span>
-
-<span class="tf-stat-title">
-Components
-</span>
-
-</div>
-
-
-<div class="tf-stat">
-
-<span class="tf-stat-value">
-100%
-</span>
-
-<span class="tf-stat-title">
-Pure CSS
-</span>
-
-</div>
-
-
-<div class="tf-stat">
-
-<span class="tf-stat-value">
-MIT
-</span>
-
-<span class="tf-stat-title">
-Open Source
-</span>
-
-</div>
-
-
-</div>
-
-</section>
-
-
-
-
-
-<!-- CARDS -->
 
 
 <section class="demo-section">
-
 
 <h2 class="demo-title">
 Cards
@@ -177,90 +70,47 @@ Cards
 <div class="demo-grid">
 
 
-
 <div class="tf-card">
 
-
 <div class="tf-card-header">
-
-<h3>
-Default Card
-</h3>
-
+<h3>Default Card</h3>
 </div>
-
 
 <div class="tf-card-body">
 
 <p>
-Standard content container with spacing,
-border and automatic theme support.
+Standard content card with spacing, border and typography.
 </p>
-
 
 <span class="tf-badge">
 Default
 </span>
 
-
 </div>
 
-
-<div class="tf-card-footer">
-
-<span class="tf-mu">
-TF-Engine
-</span>
-
 </div>
-
-
-</div>
-
-
 
 
 
 <div class="tf-card tf-accent">
 
-
 <div class="tf-card-header">
-
-<h3>
-Featured Card
-</h3>
-
+<h3>Accent Card</h3>
 </div>
-
 
 <div class="tf-card-body">
 
 <p>
-Highlighted component using the accent color.
-Useful for important information.
+Highlighted card using the accent theme.
 </p>
 
-
-<div class="demo-row">
-
 <a class="tf-btn tf-btn-primary">
-Primary
+Primary Action
 </a>
 
-
-<a class="tf-btn">
-Secondary
-</a>
-
-
 </div>
 
-
 </div>
-
-
-</div>
-
 
 
 </div>
@@ -272,48 +122,35 @@ Secondary
 
 
 
-<!-- BADGES -->
-
-
 <section class="demo-section">
 
-
 <h2 class="demo-title">
-Badges & Status
+Badges
 </h2>
 
 
 <div class="tf-panel">
 
-
-<div class="demo-row">
-
 <span class="tf-badge">
 Default
 </span>
-
 
 <span class="tf-badge tf-accent">
 Accent
 </span>
 
-
 <span class="tf-badge tf-cr">
 Critical
 </span>
-
 
 <span class="tf-badge tf-pl">
 Positive
 </span>
 
-
 <span class="tf-badge tf-nt">
 Warning
 </span>
 
-</div>
-
 
 </div>
 
@@ -322,79 +159,40 @@ Warning
 
 
 
-
-
-
-<!-- ALERTS -->
 
 
 <section class="demo-section">
 
-
 <h2 class="demo-title">
-Semantic Messages
+Alerts
 </h2>
 
 
-<div class="demo-grid">
+<div class="tf-stack">
 
 
 <div class="tf-success">
-
-<strong>
-Success
-</strong>
-
-<p>
-Operation completed successfully.
-</p>
-
+<strong>Success</strong>
+<p>Operation completed successfully.</p>
 </div>
-
 
 
 <div class="tf-warning">
-
-<strong>
-Warning
-</strong>
-
-<p>
-Review this information before continuing.
-</p>
-
+<strong>Warning</strong>
+<p>This requires attention.</p>
 </div>
-
-
 
 
 <div class="tf-error">
-
-<strong>
-Error
-</strong>
-
-<p>
-Something went wrong.
-</p>
-
+<strong>Error</strong>
+<p>An error occurred.</p>
 </div>
-
-
 
 
 <div class="tf-info">
-
-<strong>
-Information
-</strong>
-
-<p>
-Additional details are available.
-</p>
-
+<strong>Information</strong>
+<p>This is an informational message.</p>
 </div>
-
 
 
 </div>
@@ -404,10 +202,6 @@ Additional details are available.
 
 
 
-
-
-
-<!-- BUTTONS -->
 
 
 <section class="demo-section">
@@ -421,119 +215,25 @@ Buttons
 <div class="tf-card">
 
 
-<div class="demo-row">
-
-
 <a class="tf-btn tf-btn-primary">
-Save
+Primary
 </a>
 
 
 <a class="tf-btn">
-Cancel
+Secondary
 </a>
 
 
 <a class="tf-btn tf-btn-danger">
-Delete
+Danger
 </a>
 
 
-
-</div>
-
-
 </div>
 
 
 </section>
-
-
-
-
-
-
-<!-- UTILITIES -->
-
-
-<section class="demo-section">
-
-
-<h2 class="demo-title">
-Utility Classes
-</h2>
-
-
-<div class="tf-panel">
-
-
-<div class="tf-grid tf-cols-3">
-
-
-<div class="tf-card tf-center">
-.tf-flex
-</div>
-
-
-<div class="tf-card tf-center">
-.tf-grid
-</div>
-
-
-<div class="tf-card tf-center">
-.tf-shadow
-</div>
-
-
-</div>
-
-
-</div>
-
-
-</section>
-
-
-
-
-
-
-<!-- CODE -->
-
-
-<section class="demo-section">
-
-
-<h2 class="demo-title">
-Example Usage
-</h2>
-
-
-<div class="code-box">
-
-&lt;div class="tf-engine"&gt;
-
-<br>
-
-&nbsp;&nbsp;&lt;div class="tf-card tf-accent"&gt;
-
-<br>
-
-&nbsp;&nbsp;&nbsp;&nbsp;Content
-
-<br>
-
-&nbsp;&nbsp;&lt;/div&gt;
-
-<br>
-
-&lt;/div&gt;
-
-</div>
-
-
-</section>
-
 
 
 
@@ -546,10 +246,8 @@ TF-Engine — CSS Design System for MediaWiki
 </footer>
 
 
-
 </div>
 
 
 </body>
-
 </html>
