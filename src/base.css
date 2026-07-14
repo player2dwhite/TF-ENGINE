@@ -1,0 +1,100 @@
+.tf-engine{
+    background:var(--bcg);
+    color:var(--tx);
+    border:1.5px solid var(--bd2);
+    border-radius:var(--rd-lg);
+    padding:var(--pd);
+    box-shadow:var(--sh);
+    line-height:var(--lh);
+    font-family:var(--ff);
+    backdrop-filter:blur(var(--blur));
+    position:relative;
+    overflow:hidden;
+    margin-bottom:10px;
+}
+
+.tf-engine::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    opacity:var(--noise-opacity);
+    background-image:radial-gradient(#fff .4px, transparent .4px);
+    background-size:4px 4px;
+    pointer-events:none;
+    mix-blend-mode:overlay;
+}
+
+/* Container without the background grain, for nesting clean cards */
+.tf-engine .tf-flat{
+    background:none;
+}
+
+
+/* --- typography --- */
+.tf-engine h1,
+.tf-engine h2,
+.tf-engine h3{
+    color:var(--tt);
+    font-weight:var(--fw-b);
+    line-height:1.3;
+    margin:var(--mg) 0 var(--sm);
+}
+
+.tf-engine h1{ font-size:1.6em; }
+.tf-engine h2{ font-size:1.3em; border-bottom:1px solid var(--bd); padding-bottom:6px; }
+.tf-engine h3{ font-size:1.1em; color:var(--ac); }
+
+.tf-engine p{
+    color:var(--tx);
+    margin:0 0 var(--sm);
+}
+
+.tf-engine a{
+    color:var(--lk);
+    text-decoration:none;
+    transition:color var(--tr-fast) var(--ease);
+}
+.tf-engine a:hover{
+    color:var(--lk2);
+    text-decoration:underline;
+}
+
+.tf-engine small{
+    color:var(--mu);
+    font-size:.85em;
+}
+
+.tf-engine strong,
+.tf-engine b{
+    color:var(--tt);
+}
+
+.tf-engine code{
+    font-family:var(--ff-mono);
+    background:var(--pn);
+    color:var(--ac2);
+    padding:1px 6px;
+    border-radius:var(--rd-sm);
+    font-size:.9em;
+}
+
+.tf-engine pre{
+    font-family:var(--ff-mono);
+    background:var(--bg);
+    color:var(--tx);
+    border:1px solid var(--bd);
+    border-radius:var(--rd);
+    padding:var(--sm) var(--md);
+    overflow-x:auto;
+    line-height:1.5;
+}
+
+.tf-engine blockquote,
+.tf-quote{
+    border-left:3px solid var(--ac);
+    background:var(--pn2);
+    color:var(--tx);
+    margin:var(--sm) 0;
+    padding:var(--sm) var(--md);
+    border-radius:0 var(--rd) var(--rd) 0;
+}
