@@ -69,7 +69,8 @@ of `prefers-reduced-motion` and themes (`tf-theme-light`, `tf-theme-blue`,
 
 See `docs/usage.md`, `docs/variables.md`, and `docs/components.md` for more details.
 
-
 ## License
 
-See the [LICENSE](LICENSE) file.
+TF-Engine is licensed under the MIT License.
+
+See the [LICENSE](LICENSE) file for the full license text.
