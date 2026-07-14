@@ -1,0 +1,174 @@
+/* ---------- TF ENGINE Style Layer ---------- */
+
+
+/* ---------- Global Surface ---------- */
+
+body{
+    background:
+    radial-gradient(circle at 80% 10%,var(--mesh-blue),transparent 35%),
+    radial-gradient(circle at 20% 90%,var(--mesh-orange),transparent 35%),
+    var(--bg);
+}
+
+
+/* ---------- Mesh Background ---------- */
+
+.tf-mesh{
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    z-index:-1;
+    background:
+    radial-gradient(circle at 70% 20%,var(--mesh-blue),transparent 40%),
+    radial-gradient(circle at 30% 80%,var(--mesh-orange),transparent 40%);
+}
+
+
+/* ---------- Glass Effect ---------- */
+
+.tf-glass{
+    background:var(--glass);
+    border:1px solid var(--glass-border);
+    backdrop-filter:blur(12px);
+    -webkit-backdrop-filter:blur(12px);
+}
+
+
+/* ---------- Card Enhancements ---------- */
+
+.tf-card.tf-hover{
+    transition:
+    transform var(--tr-normal) var(--ease),
+    box-shadow var(--tr-normal) var(--ease),
+    border-color var(--tr-normal) var(--ease);
+}
+
+.tf-card.tf-hover:hover{
+    transform:translateY(-8px);
+    border-color:var(--bd2);
+    box-shadow:var(--sh);
+}
+
+
+/* ---------- Image Zoom ---------- */
+
+.tf-image-zoom{
+    overflow:hidden;
+}
+
+.tf-image-zoom img{
+    transition:transform .5s var(--ease);
+}
+
+.tf-image-zoom:hover img{
+    transform:scale(1.08);
+}
+
+
+/* ---------- Section Header ---------- */
+
+.tf-section-header{
+    text-align:center;
+    margin-bottom:var(--xl);
+}
+
+.tf-section-header h1,
+.tf-section-header h2{
+    margin-bottom:var(--sm);
+    color:var(--tt);
+}
+
+.tf-section-header p{
+    color:var(--st);
+}
+
+
+/* ---------- Gradient Text ---------- */
+
+.tf-gradient-text{
+    background:linear-gradient(
+    90deg,
+    var(--ac),
+    var(--cyan)
+    );
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+}
+
+
+/* ---------- Glow ---------- */
+
+.tf-glow{
+    box-shadow:var(--gl);
+}
+
+
+/* ---------- Smooth Links ---------- */
+
+.tf-smooth-link{
+    transition:
+    color var(--tr-fast) var(--ease),
+    transform var(--tr-fast) var(--ease);
+}
+
+.tf-smooth-link:hover{
+    color:var(--ac);
+    transform:translateX(4px);
+}
+
+
+/* ---------- Floating Button ---------- */
+
+.tf-floating{
+    transition:
+    transform var(--tr-fast) var(--ease),
+    box-shadow var(--tr-fast) var(--ease);
+}
+
+.tf-floating:hover{
+    transform:translateY(-5px);
+    box-shadow:var(--e2);
+}
+
+
+/* ---------- Selection ---------- */
+
+::selection{
+    background:var(--ac);
+    color:#fff;
+}
+
+
+/* ---------- Scrollbar ---------- */
+
+::-webkit-scrollbar{
+    width:10px;
+}
+
+::-webkit-scrollbar-track{
+    background:var(--bg);
+}
+
+::-webkit-scrollbar-thumb{
+    background:var(--ac);
+    border-radius:var(--rd-pill);
+}
+
+::-webkit-scrollbar-thumb:hover{
+    background:var(--ac2);
+}
+
+
+/* ---------- Reduced Motion ---------- */
+
+@media(prefers-reduced-motion:reduce){
+
+*,
+*::before,
+*::after{
+    animation-duration:.01ms!important;
+    transition-duration:.01ms!important;
+}
+
+}
