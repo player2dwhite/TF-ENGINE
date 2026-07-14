@@ -1,0 +1,19 @@
+/* --- Responsive breakpoint (tablet/mobile) --- */
+@media (max-width:768px){
+    .tf-grid{ grid-template-columns:1fr; }
+    .tf-navbar{ flex-direction:column; align-items:flex-start; }
+    .tf-cols-2,
+    .tf-cols-3{ columns:1; }
+    .tf-dashboard{ grid-template-columns:1fr 1fr; }
+    .tf-hidden-mobile{ display:none; }
+    .tf-hidden-desktop{ display:block; }
+}
+
+/* --- Print --- */
+@media print{
+    .tf-engine{ box-shadow:none; border-color:#000; background:#fff; color:#000; }
+    .tf-btn,
+    .tf-dropdown,
+    .tf-tooltip::after,
+    .mw-collapsible-toggle{ display:none !important; }
+}
