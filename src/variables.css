@@ -1,0 +1,201 @@
+/* --- Variables (:root) */
+:root{
+
+    /* --- Backgrounds / surfaces --- */
+    --bcg:#0007;            /* main card background (translucent black) */
+    --bg:#111;               /* base background 1 */
+    --bg2:#161616;           /* base background 2 (alternate rows, panels) */
+    --bg3:#202020;           /* elevated background (hover, third level) */
+
+    --glass:#ffffff06;       /* glass-like layer, for subtle overlays */
+    --pn:#ffffff08;          /* neutral panel background */
+    --pn2:#4A90E20d;         /* accent-tinted panel background (~5%) */
+
+    /* --- Text --- */
+    --tx:#ccc;                /* base text */
+    --tt:#f2f2f2;             /* title text (lighter) */
+    --st:#b5b5b5;             /* subtitle text */
+    --ds:#9d9d9d;             /* description / secondary text */
+    --mu:#666;                /* muted text (notes, timestamps) */
+
+    /* --- Accent and brand color --- */
+    --ac:#4A90E2;             /* primary accent (Town Factions blue) */
+    --ac2:#6FA8E8;            /* secondary accent / accent hover */
+
+    /* --- Single-piece semantics (without light variant) --- */
+    --cr:#ff4d4d;             /* critical / danger (red) */
+
+    /* --- Color + light variant pairs (8% tinted background) --- */
+    --pl:#4ADE80;             /* positive / success (green) */
+    --pll:#4ADE8014;          /* positive, light version (tinted background) */
+    --nt:#FFB84D;             /* warning / notice (amber) */
+    --ntl:#FFB84D14;           /* warning, light version (tinted background) */
+
+    /* --- Links --- */
+    --lk:#4A90E2;             /* link color */
+    --lk2:#6FA8E8;            /* link hover color */
+
+    /* --- Extra colors (free palette for new badges/states) --- */
+    --red:#ff4d4d;
+    --green:#4ADE80;
+    --yellow:#FFD24D;
+    --purple:#A78BFA;
+    --cyan:#38BDF8;
+
+    /* --- Borders --- */
+    --bd:#ffffff14;           /* subtle border (internal lines, hr) */
+    --ln:var(--bd);           /* alias of --bd: line/divider (same value, short name requested) */
+    --bd2:#ffffff80;          /* strong border (outer frame of the card) */
+
+    /* --- Radii --- */
+    --rd:8px;                 /* base radius */
+    --rd-sm:4px;              /* small radius (badges, chips) */
+    --rd-lg:14px;             /* large radius (highlighted cards) */
+    --rd-pill:999px;          /* full radius (pills, rounded buttons) */
+
+    /* --- Shadows / depth --- */
+    --sh:0 5px 20px #00000080;              /* standard card shadow */
+    --ss:0 2px 8px #00000040;               /* soft shadow (small elements) */
+    --is:inset 0 1px 2px #00000040;         /* inner shadow (inputs, pressed effect) */
+    --gl:0 0 10px #4A90E280;                /* accent glow (uses --ac by default) */
+
+    /* --- Typography --- */
+    --ff:inherit;                            /* base font family */
+    --ff-mono:monospace;                     /* monospace font family */
+    --lh:1.7;                                /* base line-height */
+    --fw:400;                                /* normal font-weight */
+    --fw-b:700;                              /* bold font-weight */
+
+    /* --- Size scale (xs to xl) --- */
+    --xs:4px;
+    --sm:8px;
+    --md:16px;
+    --lg:24px;
+    --xl:32px;
+
+    /* --- Spacing (derived from the scale) --- */
+    --pd:20px 25px;           /* default padding for the parent block */
+    --pd-card:var(--md);      /* default padding for a card */
+    --gp:var(--sm);           /* default gap in flex/grid layouts */
+    --mg:var(--md);           /* default margin between blocks */
+
+    /* --- States --- */
+    --hover:#ffffff08;                       /* hover overlay */
+    --active:#ffffff10;                      /* click/active overlay */
+    --disabled:#ffffff05;                    /* disabled element background */
+    --focus:0 0 0 3px var(--ac);             /* accessible focus ring */
+
+    /* --- Tables --- */
+    --table-head:#0a0a0a;
+    --table-row1:#111;
+    --table-row2:#161616;
+
+    /* --- Media --- */
+    --fit:cover;               /* default object-fit */
+    --pos:center;              /* default object-position */
+
+    /* --- Transitions --- */
+    --tr-fast:.15s;
+    --tr-normal:.3s;
+    --ease:cubic-bezier(.4,0,.2,1);
+
+    /* --- Layout tokens --- */
+    --flex:flex;
+    --grid:grid;
+    --wrap:wrap;
+    --center:center;
+    --pointer:pointer;
+    --full:100%;
+    --auto:auto;
+    --none:none;
+
+    /* --- Derived translucent colors (was hardcoded inline) --- */
+    --crl:#ff4d4d14;          /* critical, light tint (was inline in .tf-error/.tf-badge.tf-cr) */
+    --cr-tx:#ffb3b3;          /* readable text color over critical backgrounds */
+    --infol:#38bdf814;        /* info, light tint (was inline in .tf-info) */
+    --th-line:#4A90E233;      /* table header underline (was inline in .tf-table th) */
+
+    /* --- Layout sizing --- */
+    --content-width:100%;
+    --hero-height:auto;
+    --card-width:auto;
+    --container-width:1200px;
+
+    /* --- Blur / glass effect (off by default, set per page to enable) --- */
+    --blur:0px;
+
+    /* --- Animation durations (parallel to --tr-*, for future components) --- */
+    --anim-fast:.15s;
+    --anim:.3s;
+    --anim-slow:.5s;
+
+    /* --- Icon / avatar / image sizing --- */
+    --icon-size:18px;
+    --avatar-size:64px;
+    --image-radius:var(--rd);
+
+    /* --- Noise texture opacity --- */
+    --noise-opacity:.03;
+
+    /* --- Z-index scale --- */
+    --z-dropdown:20;
+    --z-modal:100;
+    --z-tooltip:200;
+    --z-toast:300;
+
+    /* --- Border width / style (paired with --bd / --bd2 colors) --- */
+    --bw:1px;
+    --bw2:1.5px;
+    --bs:solid;
+
+    /* --- Table sizing --- */
+    --table-padding:10px 12px;
+    --table-radius:var(--rd);
+    --table-border:var(--bd);
+
+    /* --- Button sizing --- */
+    --btn-padding:8px 18px;
+    --btn-radius:var(--rd);
+    --btn-font:.9em;
+
+    /* --- Card sizing --- */
+    --card-padding:var(--pd-card);
+    --card-radius:var(--rd);
+    --card-shadow:var(--ss);
+
+    /* --- Elevation scale (Material-style) --- */
+    --e1:0 1px 3px #00000040;
+    --e2:0 4px 10px #00000060;
+    --e3:0 10px 25px #00000080;
+}
+
+@media (prefers-reduced-motion:reduce){
+    *{
+        animation:none !important;
+        transition:none !important;
+    }
+}
+
+/* --- Themes: override any variable per page or globally ---
+   Usage: <div class="tf-engine tf-theme-light"> ...
+   or add [data-theme="light"] to <body> via a gadget/skin hook
+   (not possible from wikitext alone — class-based works today). */
+[data-theme="light"],
+.tf-theme-light{
+    --bcg:#fff7;
+    --bg:#f4f4f4;
+    --bg2:#e8e8e8;
+    --bg3:#dcdcdc;
+    --pn:#0000000a;
+    --pn2:#4A90E20d;
+    --tx:#333;
+    --tt:#111;
+    --st:#444;
+    --ds:#555;
+    --mu:#888;
+    --bd:#00000014;
+    --bd2:#00000040;
+}
+.tf-theme-blue{ --ac:#4A90E2; --ac2:#6FA8E8; }
+.tf-theme-red{ --ac:#ff4d4d; --ac2:#ff7a7a; }
+.tf-theme-green{ --ac:#4ADE80; --ac2:#7CE8A4; }
