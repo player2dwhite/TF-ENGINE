@@ -1,0 +1,90 @@
+/* ---------- Vertical Tabs ---------- */
+
+.tf-vtabs{
+    display:flex;
+    gap:var(--lg);
+    background:var(--pn);
+    border:1px solid var(--bd);
+    border-radius:var(--rd-lg);
+    padding:var(--md);
+}
+
+
+/* ---------- Navigation ---------- */
+
+.tf-vtabs-nav{
+    position:relative;
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+    min-width:180px;
+}
+
+
+.tf-vtabs-nav a{
+    position:relative;
+    z-index:2;
+    padding:12px 16px;
+    border-radius:var(--rd);
+    color:var(--ds);
+    text-decoration:none;
+    transition:
+    color var(--tr-fast) var(--ease),
+    background var(--tr-fast) var(--ease);
+}
+
+
+.tf-vtabs-nav a:hover{
+    color:var(--ac);
+    background:var(--hover);
+}
+
+
+.tf-vtabs-nav a.tf-active{
+    color:#fff;
+    background:var(--ac);
+}
+
+
+/* ---------- Content ---------- */
+
+.tf-vtabs-content{
+    flex:1;
+    color:var(--tx);
+}
+
+
+.tf-vtabs-panel{
+    display:none;
+}
+
+
+.tf-vtabs-panel.tf-active{
+    display:block;
+}
+
+
+.tf-vtabs-title{
+    font-size:1.5em;
+    font-weight:var(--fw-b);
+    margin-bottom:var(--sm);
+    color:var(--tt);
+}
+
+
+/* ---------- Responsive ---------- */
+
+@media(max-width:800px){
+
+.tf-vtabs{
+    flex-direction:column;
+}
+
+
+.tf-vtabs-nav{
+    flex-direction:row;
+    flex-wrap:wrap;
+    min-width:0;
+}
+
+}
