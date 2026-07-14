@@ -1,41 +1,241 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>TF-Engine — Cards</title>
+
 <link rel="stylesheet" href="../css/tf-engine.css">
+
 <style>
-  body{ background:#0a0a0a; padding:40px; font-family:sans-serif; }
-  .tf-engine{ max-width:700px; margin:0 auto; }
+body{
+    background:#0a0a0a;
+    padding:40px;
+    font-family:sans-serif;
+}
+
+.tf-engine{
+    max-width:900px;
+    margin:auto;
+}
+
+.demo-section{
+    margin-bottom:32px;
+}
+
+.demo-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+    gap:20px;
+}
 </style>
+
 </head>
+
 <body>
 
 <div class="tf-engine">
-  <h1>Cards &amp; Badges</h1>
 
-  <div class="tf-card">
-    <h3>Card simple</h3>
-    <p>Contenido de una card normal, sin acento.</p>
-    <span class="tf-badge">Default</span>
-    <span class="tf-badge tf-accent">Accent</span>
-    <span class="tf-badge tf-cr">Crítico</span>
-    <span class="tf-badge tf-pl">Positivo</span>
-    <span class="tf-badge tf-nt">Aviso</span>
-  </div>
+<div class="tf-hero">
 
-  <div class="tf-card tf-accent">
-    <h3>Card destacada</h3>
-    <p>Variante con borde de acento a la izquierda.</p>
-    <a href="#" class="tf-btn tf-btn-primary">Acción principal</a>
-    <a href="#" class="tf-btn">Secundaria</a>
-    <a href="#" class="tf-btn tf-btn-danger">Peligro</a>
-  </div>
+<h1>Cards & Components</h1>
 
-  <div class="tf-success">Operación completada con éxito.</div>
-  <div class="tf-warning">Revisa esta sección antes de continuar.</div>
-  <div class="tf-error">Ocurrió un error al procesar la solicitud.</div>
-  <div class="tf-info">Este contenido es solo informativo.</div>
+<p>
+Examples of TF-Engine cards, badges, alerts and interactive components.
+All components are built using only <code>tf-*</code> classes.
+</p>
+
+</div>
+
+
+<div class="demo-section">
+
+<h2>Basic Cards</h2>
+
+<div class="demo-grid">
+
+
+<div class="tf-card">
+
+<div class="tf-card-header">
+<h3>Default Card</h3>
+</div>
+
+<div class="tf-card-body">
+
+<p>
+A simple card with standard background, spacing,
+border and typography.
+</p>
+
+<span class="tf-badge">
+Default
+</span>
+
+</div>
+
+<div class="tf-card-footer">
+
+<span class="tf-mu">
+TF-Engine
+</span>
+
+</div>
+
+</div>
+
+
+
+<div class="tf-card tf-accent">
+
+<div class="tf-card-header">
+<h3>Accent Card</h3>
+</div>
+
+<div class="tf-card-body">
+
+<p>
+Highlighted card using the primary accent color.
+Useful for featured content.
+</p>
+
+<a class="tf-btn tf-btn-primary">
+Primary
+</a>
+
+<a class="tf-btn">
+Secondary
+</a>
+
+</div>
+
+</div>
+
+
+</div>
+
+</div>
+
+
+
+<div class="demo-section">
+
+<h2>Badges</h2>
+
+<div class="tf-card">
+
+<span class="tf-badge">Default</span>
+
+<span class="tf-badge tf-accent">
+Accent
+</span>
+
+<span class="tf-badge tf-cr">
+Critical
+</span>
+
+<span class="tf-badge tf-pl">
+Positive
+</span>
+
+<span class="tf-badge tf-nt">
+Warning
+</span>
+
+</div>
+
+</div>
+
+
+
+
+<div class="demo-section">
+
+<h2>Semantic Cards</h2>
+
+<div class="demo-grid">
+
+
+<div class="tf-success">
+<strong>Success</strong>
+<p>
+The operation completed successfully.
+</p>
+</div>
+
+
+<div class="tf-warning">
+<strong>Warning</strong>
+<p>
+Check this section before continuing.
+</p>
+</div>
+
+
+<div class="tf-error">
+<strong>Error</strong>
+<p>
+Something went wrong while processing.
+</p>
+</div>
+
+
+<div class="tf-info">
+<strong>Information</strong>
+<p>
+Additional information is available here.
+</p>
+</div>
+
+
+</div>
+
+</div>
+
+
+
+
+<div class="demo-section">
+
+<h2>Actions</h2>
+
+<div class="tf-card">
+
+<h3>Button Variants</h3>
+
+<p>
+TF-Engine buttons can be combined with cards and layouts.
+</p>
+
+
+<a class="tf-btn tf-btn-primary">
+Save changes
+</a>
+
+<a class="tf-btn">
+Cancel
+</a>
+
+<a class="tf-btn tf-btn-danger">
+Delete
+</a>
+
+
+</div>
+
+</div>
+
+
+
+
+<div class="tf-footer">
+
+TF-Engine — CSS Design System for MediaWiki
+
+</div>
+
+
 </div>
 
 </body>
