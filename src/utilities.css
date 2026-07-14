@@ -1,0 +1,272 @@
+/* --- Layout --- */
+.tf-flex{
+    display:var(--flex);
+    align-items:var(--center);
+    gap:var(--gp);
+}
+.tf-flex.tf-wrap{ flex-wrap:var(--wrap); }
+.tf-flex.tf-between{ justify-content:space-between; }
+.tf-flex.tf-center{ justify-content:var(--center); }
+
+.tf-grid{
+    display:var(--grid);
+    grid-template-columns:repeat(auto-fit, minmax(180px, 1fr));
+    gap:var(--gp);
+}
+.tf-grid.tf-cols-2{ grid-template-columns:repeat(2, 1fr); }
+.tf-grid.tf-cols-3{ grid-template-columns:repeat(3, 1fr); }
+.tf-grid.tf-cols-4{ grid-template-columns:repeat(4, 1fr); }
+
+.tf-center{ text-align:var(--center); }
+.tf-right{ text-align:right; }
+.tf-left{ text-align:left; }
+
+.tf-cols-2{ columns:2; column-gap:var(--md); }
+.tf-cols-3{ columns:3; column-gap:var(--md); }
+
+
+/* --- Utilities --- */
+
+/* --- Radius --- */
+.tf-round{ border-radius:var(--rd); }
+.tf-round-sm{ border-radius:var(--rd-sm); }
+.tf-round-lg{ border-radius:var(--rd-lg); }
+.tf-round-pill{ border-radius:var(--rd-pill); }
+
+/* --- Shadow / glow --- */
+.tf-shadow{ box-shadow:var(--sh); }
+.tf-shadow-sm{ box-shadow:var(--ss); }
+.tf-shadow-inset{ box-shadow:var(--is); }
+.tf-glow{ box-shadow:var(--gl); }
+
+/* --- Visibility --- */
+.tf-hidden{ display:var(--none); }
+.tf-block{ display:block; }
+.tf-inline{ display:inline-block; }
+
+/* --- Cursor / interaction --- */
+.tf-clickable{ cursor:var(--pointer); }
+.tf-clickable:hover{ background:var(--hover); }
+.tf-clickable:active{ background:var(--active); }
+.tf-clickable[aria-disabled="true"],
+.tf-disabled{
+    background:var(--disabled);
+    color:var(--mu);
+    cursor:not-allowed;
+    pointer-events:none;
+}
+.tf-clickable:focus-visible{ box-shadow:var(--focus); outline:none; }
+
+/* --- Transitions --- */
+.tf-tr{ transition:all var(--tr-normal) var(--ease); }
+.tf-tr-fast{ transition:all var(--tr-fast) var(--ease); }
+
+/* --- Márgin (escala xs–xl) --- */
+.tf-mt-1{ margin-top:var(--xs); }
+.tf-mt-2{ margin-top:var(--sm); }
+.tf-mt-3{ margin-top:var(--md); }
+.tf-mt-4{ margin-top:var(--lg); }
+.tf-mt-5{ margin-top:var(--xl); }
+
+.tf-mb-1{ margin-bottom:var(--xs); }
+.tf-mb-2{ margin-bottom:var(--sm); }
+.tf-mb-3{ margin-bottom:var(--md); }
+.tf-mb-4{ margin-bottom:var(--lg); }
+.tf-mb-5{ margin-bottom:var(--xl); }
+
+/* --- Paddings (xs–xl) --- */
+.tf-p-1{ padding:var(--xs); }
+.tf-p-2{ padding:var(--sm); }
+.tf-p-3{ padding:var(--md); }
+.tf-p-4{ padding:var(--lg); }
+.tf-p-5{ padding:var(--xl); }
+
+/* --- Gaps --- */
+.tf-gap-1{ gap:var(--xs); }
+.tf-gap-2{ gap:var(--sm); }
+.tf-gap-3{ gap:var(--md); }
+.tf-gap-4{ gap:var(--lg); }
+
+/* --- Text --- */
+.tf-tx{ color:var(--tx); }
+.tf-tt{ color:var(--tt); }
+.tf-st{ color:var(--st); }
+.tf-ds{ color:var(--ds); }
+.tf-mu{ color:var(--mu); }
+.tf-ac{ color:var(--ac); }
+.tf-cr{ color:var(--cr); }
+.tf-pl{ color:var(--pl); }
+.tf-nt{ color:var(--nt); }
+
+.tf-uppercase{ text-transform:uppercase; letter-spacing:.5px; }
+.tf-italic{ font-style:italic; }
+.tf-bold{ font-weight:var(--fw-b); }
+.tf-mono{ font-family:var(--ff-mono); }
+
+/* --- Animation --- */
+@keyframes tf-fade-in{ from{ opacity:0; } to{ opacity:1; } }
+@keyframes tf-slide-in{ from{ opacity:0; transform:translateY(10px); } to{ opacity:1; transform:translateY(0); } }
+@keyframes tf-zoom-in{ from{ opacity:0; transform:scale(.9); } to{ opacity:1; transform:scale(1); } }
+@keyframes tf-pulse{ 0%,100%{ opacity:1; } 50%{ opacity:.5; } }
+
+.tf-fade{ animation:tf-fade-in var(--tr-normal) var(--ease); }
+.tf-slide{ animation:tf-slide-in var(--tr-normal) var(--ease); }
+.tf-zoom{ animation:tf-zoom-in var(--tr-normal) var(--ease); }
+.tf-pulse{ animation:tf-pulse 1.6s ease-in-out infinite; }
+
+/* --- Surface --- */
+.tf-surface{
+    background:var(--pn);
+    border:1px solid var(--bd);
+    border-radius:var(--rd);
+    padding:var(--pd-card);
+    color:var(--tx);
+}
+
+/* --- Container --- */
+.tf-container{
+    max-width:var(--container-width);
+    width:var(--content-width);
+    margin:0 auto;
+}
+
+/* --- Stack: vertical flex with gap --- */
+.tf-stack{ display:flex; flex-direction:column; gap:var(--gp); }
+
+/* --- Elevations (Material-style shadow steps) --- */
+.tf-e1{ box-shadow:var(--e1); }
+.tf-e2{ box-shadow:var(--e2); }
+.tf-e3{ box-shadow:var(--e3); }
+
+/* --- Width utilities --- */
+.tf-w-25{ width:25%; }
+.tf-w-50{ width:50%; }
+.tf-w-75{ width:75%; }
+.tf-w-100{ width:var(--full); }
+.tf-max-sm{ max-width:360px; }
+.tf-max-md{ max-width:600px; }
+.tf-max-lg{ max-width:900px; }
+
+/* --- Flex utilities --- */
+.tf-row{ display:flex; flex-direction:row; }
+.tf-column{ display:flex; flex-direction:column; }
+.tf-grow{ flex-grow:1; }
+.tf-shrink{ flex-shrink:1; }
+.tf-align-start{ align-items:flex-start; }
+.tf-align-center{ align-items:var(--center); }
+.tf-align-end{ align-items:flex-end; }
+.tf-justify-start{ justify-content:flex-start; }
+.tf-justify-center{ justify-content:var(--center); }
+.tf-justify-end{ justify-content:flex-end; }
+.tf-justify-between{ justify-content:space-between; }
+.tf-order-1{ order:1; }
+.tf-order-2{ order:2; }
+.tf-order-3{ order:3; }
+
+/* --- Grid utilities --- */
+.tf-col-span-2{ grid-column:span 2; }
+.tf-col-span-3{ grid-column:span 3; }
+.tf-col-span-4{ grid-column:span 4; }
+.tf-row-span-2{ grid-row:span 2; }
+.tf-grid-center{ display:var(--grid); place-items:var(--center); }
+
+/* --- Text helpers --- */
+.tf-lowercase{ text-transform:lowercase; }
+.tf-capitalize{ text-transform:capitalize; }
+.tf-small{ font-size:.85em; }
+.tf-large{ font-size:1.15em; }
+.tf-xl{ font-size:1.5em; }
+.tf-truncate{ overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.tf-wrap{ white-space:normal; }
+.tf-break-word{ word-break:break-word; }
+.tf-pre{ white-space:pre-wrap; font-family:var(--ff-mono); }
+.tf-nowrap{ white-space:nowrap; }
+.tf-break{ word-break:break-all; }
+
+/* --- Color helpers (background) --- */
+.tf-bg{ background:var(--bg); }
+.tf-bg2{ background:var(--bg2); }
+.tf-bg3{ background:var(--bg3); }
+.tf-panel-bg{ background:var(--pn); }
+.tf-bg-ac{ background:var(--ac); color:#fff; }
+.tf-bg-red{ background:var(--red); color:#fff; }
+.tf-bg-green{ background:var(--green); color:#111; }
+.tf-bg-yellow{ background:var(--yellow); color:#111; }
+
+/* --- Color helpers (border) --- */
+.tf-border-ac{ border-color:var(--ac); }
+.tf-border-red{ border-color:var(--red); }
+
+/* --- Opacity helpers --- */
+.tf-opacity-25{ opacity:.25; }
+.tf-opacity-50{ opacity:.5; }
+.tf-opacity-75{ opacity:.75; }
+.tf-opacity-100{ opacity:1; }
+
+/* --- Position helpers --- */
+.tf-relative{ position:relative; }
+.tf-absolute{ position:absolute; }
+.tf-fixed{ position:fixed; }
+.tf-sticky{ position:sticky; top:0; }
+.tf-top{ top:0; }
+.tf-bottom{ bottom:0; }
+.tf-inset-left{ left:0; }
+.tf-inset-right{ right:0; }
+.tf-center-x{ left:50%; transform:translateX(-50%); }
+.tf-center-y{ top:50%; transform:translateY(-50%); }
+
+/* --- Display utilities --- */
+.tf-inline-flex{ display:inline-flex; }
+.tf-inline-grid{ display:inline-grid; }
+.tf-none{ display:var(--none); }
+
+/* --- Overflow utilities --- */
+.tf-overflow-auto{ overflow:auto; }
+.tf-overflow-hidden{ overflow:hidden; }
+.tf-scroll-x{ overflow-x:auto; }
+.tf-scroll-y{ overflow-y:auto; }
+.tf-scroll{ overflow:auto; }
+
+/* --- Cursor utilities --- */
+.tf-help{ cursor:help; }
+.tf-grab{ cursor:grab; }
+.tf-grabbing{ cursor:grabbing; }
+.tf-copy{ cursor:copy; }
+.tf-select-none{ user-select:none; }
+
+/* --- Directional radius utilities --- */
+.tf-rounded-top{ border-radius:var(--rd) var(--rd) 0 0; }
+.tf-rounded-bottom{ border-radius:0 0 var(--rd) var(--rd); }
+.tf-rounded-left{ border-radius:var(--rd) 0 0 var(--rd); }
+.tf-rounded-right{ border-radius:0 var(--rd) var(--rd) 0; }
+
+/* --- Directional border utilities --- */
+.tf-border{ border:var(--bw) var(--bs) var(--bd); }
+.tf-border-top{ border-top:var(--bw) var(--bs) var(--bd); }
+.tf-border-bottom{ border-bottom:var(--bw) var(--bs) var(--bd); }
+.tf-border-left{ border-left:var(--bw) var(--bs) var(--bd); }
+.tf-border-right{ border-right:var(--bw) var(--bs) var(--bd); }
+
+/* --- Global focus  --- */
+.tf-input:focus-visible,
+.tf-textarea:focus-visible,
+.tf-select:focus-visible,
+.tf-engine a:focus-visible{
+    box-shadow:var(--focus);
+    outline:none;
+}
+
+/* --- Selection --- */
+.tf-engine ::selection{
+    background:var(--ac);
+    color:#fff;
+}
+
+/* --- Custom scrollbar (WebKit) --- */
+.tf-engine::-webkit-scrollbar{ width:8px; height:8px; }
+.tf-engine::-webkit-scrollbar-track{ background:var(--bg); }
+.tf-engine::-webkit-scrollbar-thumb{ background:var(--bd2); border-radius:var(--rd-pill); }
+.tf-engine::-webkit-scrollbar-thumb:hover{ background:var(--ac); }
+
+/* --- Responsive mobile / desktop visibility --- */
+.tf-hidden-desktop{ display:none; }
