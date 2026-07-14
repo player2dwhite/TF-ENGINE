@@ -1,0 +1,133 @@
+/* ---------- Footer Layout ---------- */
+
+.tf-footer-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(var(--footer-column-width),1fr));
+    gap:var(--footer-gap);
+    align-items:start;
+}
+
+.tf-footer-column{
+    display:flex;
+    flex-direction:column;
+    gap:var(--sm);
+}
+
+.tf-footer-title{
+    margin:0;
+    color:var(--tt);
+    font-size:1rem;
+    font-weight:var(--fw-b);
+}
+
+.tf-footer-text{
+    color:var(--mu);
+    line-height:1.7;
+}
+
+.tf-footer-links{
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+}
+
+.tf-footer-links a{
+    color:var(--mu);
+    text-decoration:none;
+    transition:color var(--tr-fast) var(--ease);
+}
+
+.tf-footer-links a:hover{
+    color:var(--ac);
+}
+
+.tf-footer-bottom{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    flex-wrap:wrap;
+    gap:var(--sm);
+    margin-top:var(--lg);
+    padding-top:var(--md);
+    border-top:1px solid var(--bd);
+    color:var(--mu);
+    font-size:.85em;
+}
+
+@media (max-width:700px){
+    .tf-footer-bottom{
+        flex-direction:column;
+        text-align:center;
+    }
+}
+
+/* ---------- Container ---------- */
+
+.tf-container{
+    width:min(var(--container-width),100%);
+    margin-inline:auto;
+    padding-inline:var(--container-padding);
+}
+
+/* ---------- Sections ---------- */
+
+.tf-section{
+    margin-block:var(--section-space);
+}
+
+/* ---------- Grid ---------- */
+
+.tf-grid{
+    display:grid;
+    gap:var(--gp);
+}
+
+.tf-grid-auto{
+    grid-template-columns:repeat(auto-fit,minmax(var(--grid-min),1fr));
+}
+
+.tf-grid-2{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+}
+
+.tf-grid-3{
+    grid-template-columns:repeat(3,minmax(0,1fr));
+}
+
+.tf-grid-4{
+    grid-template-columns:repeat(4,minmax(0,1fr));
+}
+
+/* ---------- Flex ---------- */
+
+.tf-flex{
+    display:flex;
+    gap:var(--gp);
+}
+
+.tf-row{
+    flex-direction:row;
+}
+
+.tf-column{
+    flex-direction:column;
+}
+
+.tf-wrap{
+    flex-wrap:wrap;
+}
+
+.tf-center{
+    align-items:center;
+    justify-content:center;
+}
+
+.tf-between{
+    justify-content:space-between;
+}
+
+/* ---------- Stack ---------- */
+
+.tf-stack>*+*{
+    margin-top:var(--stack-space);
+}
