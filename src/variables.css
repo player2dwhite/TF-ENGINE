@@ -199,3 +199,19 @@
 .tf-theme-blue{ --ac:#4A90E2; --ac2:#6FA8E8; }
 .tf-theme-red{ --ac:#ff4d4d; --ac2:#ff7a7a; }
 .tf-theme-green{ --ac:#4ADE80; --ac2:#7CE8A4; }
+
+/* ---------- Layout ---------- */
+
+--container-width:1200px;
+--container-padding:20px;
+
+--section-space:48px;
+
+--stack-space:16px;
+
+--grid-min:240px;
+
+/* ---------- Footer ---------- */
+
+--footer-column-width:220px;
+--footer-gap:32px;
