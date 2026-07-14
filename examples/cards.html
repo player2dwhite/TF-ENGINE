@@ -1,79 +1,210 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>TF-Engine — Cards</title>
+<title>TF-Engine — Components Showcase</title>
 
 <link rel="stylesheet" href="../css/tf-engine.css">
 
 <style>
+
 body{
-    background:#0a0a0a;
+    background:#f4f4f5;
     padding:40px;
-    font-family:sans-serif;
+    font-family:Arial, Helvetica, sans-serif;
 }
 
 .tf-engine{
-    max-width:900px;
+    max-width:1100px;
     margin:auto;
 }
 
 .demo-section{
-    margin-bottom:32px;
+    margin:45px 0;
+}
+
+.demo-title{
+    margin-bottom:15px;
 }
 
 .demo-grid{
     display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
     gap:20px;
 }
+
+.demo-row{
+    display:flex;
+    flex-wrap:wrap;
+    gap:12px;
+    align-items:center;
+}
+
+.code-box{
+    background:#111;
+    color:#ddd;
+    padding:20px;
+    border-radius:12px;
+    font-family:monospace;
+    overflow:auto;
+}
+
+.hero-icon{
+    font-size:48px;
+}
+
 </style>
 
 </head>
 
+
 <body>
 
-<div class="tf-engine">
 
-<div class="tf-hero">
+<div class="tf-engine tf-theme-light">
 
-<h1>Cards & Components</h1>
+
+<!-- HERO -->
+
+<section class="tf-hero">
+
+<div class="hero-icon">
+⚡
+</div>
+
+<h1>
+TF-Engine
+</h1>
 
 <p>
-Examples of TF-Engine cards, badges, alerts and interactive components.
-All components are built using only <code>tf-*</code> classes.
+A pure CSS design system for Fandom and MediaWiki wikis.
+Create modern interfaces with reusable <code>tf-*</code> classes.
 </p>
+
+<div class="demo-row">
+
+<span class="tf-badge tf-accent">
+CSS Framework
+</span>
+
+<span class="tf-badge tf-pl">
+MIT License
+</span>
+
+<span class="tf-badge">
+MediaWiki Ready
+</span>
 
 </div>
 
+</section>
 
-<div class="demo-section">
 
-<h2>Basic Cards</h2>
+
+<!-- STATS -->
+
+<section class="demo-section">
+
+<h2 class="demo-title">
+System Overview
+</h2>
+
 
 <div class="demo-grid">
 
 
+<div class="tf-stat">
+
+<span class="tf-stat-value">
+50+
+</span>
+
+<span class="tf-stat-title">
+Components
+</span>
+
+</div>
+
+
+<div class="tf-stat">
+
+<span class="tf-stat-value">
+100%
+</span>
+
+<span class="tf-stat-title">
+Pure CSS
+</span>
+
+</div>
+
+
+<div class="tf-stat">
+
+<span class="tf-stat-value">
+MIT
+</span>
+
+<span class="tf-stat-title">
+Open Source
+</span>
+
+</div>
+
+
+</div>
+
+</section>
+
+
+
+
+
+<!-- CARDS -->
+
+
+<section class="demo-section">
+
+
+<h2 class="demo-title">
+Cards
+</h2>
+
+
+<div class="demo-grid">
+
+
+
 <div class="tf-card">
 
+
 <div class="tf-card-header">
-<h3>Default Card</h3>
+
+<h3>
+Default Card
+</h3>
+
 </div>
+
 
 <div class="tf-card-body">
 
 <p>
-A simple card with standard background, spacing,
-border and typography.
+Standard content container with spacing,
+border and automatic theme support.
 </p>
+
 
 <span class="tf-badge">
 Default
 </span>
 
+
 </div>
+
 
 <div class="tf-card-footer">
 
@@ -83,61 +214,99 @@ TF-Engine
 
 </div>
 
+
 </div>
+
+
 
 
 
 <div class="tf-card tf-accent">
 
+
 <div class="tf-card-header">
-<h3>Accent Card</h3>
+
+<h3>
+Featured Card
+</h3>
+
 </div>
+
 
 <div class="tf-card-body">
 
 <p>
-Highlighted card using the primary accent color.
-Useful for featured content.
+Highlighted component using the accent color.
+Useful for important information.
 </p>
+
+
+<div class="demo-row">
 
 <a class="tf-btn tf-btn-primary">
 Primary
 </a>
 
+
 <a class="tf-btn">
 Secondary
 </a>
 
-</div>
 
 </div>
 
 
 </div>
 
+
 </div>
 
 
 
-<div class="demo-section">
+</div>
 
-<h2>Badges</h2>
 
-<div class="tf-card">
+</section>
 
-<span class="tf-badge">Default</span>
+
+
+
+
+<!-- BADGES -->
+
+
+<section class="demo-section">
+
+
+<h2 class="demo-title">
+Badges & Status
+</h2>
+
+
+<div class="tf-panel">
+
+
+<div class="demo-row">
+
+<span class="tf-badge">
+Default
+</span>
+
 
 <span class="tf-badge tf-accent">
 Accent
 </span>
 
+
 <span class="tf-badge tf-cr">
 Critical
 </span>
 
+
 <span class="tf-badge tf-pl">
 Positive
 </span>
+
 
 <span class="tf-badge tf-nt">
 Warning
@@ -145,98 +314,242 @@ Warning
 
 </div>
 
+
 </div>
 
 
+</section>
 
 
-<div class="demo-section">
 
-<h2>Semantic Cards</h2>
+
+
+
+<!-- ALERTS -->
+
+
+<section class="demo-section">
+
+
+<h2 class="demo-title">
+Semantic Messages
+</h2>
+
 
 <div class="demo-grid">
 
 
 <div class="tf-success">
-<strong>Success</strong>
+
+<strong>
+Success
+</strong>
+
 <p>
-The operation completed successfully.
+Operation completed successfully.
 </p>
+
 </div>
+
 
 
 <div class="tf-warning">
-<strong>Warning</strong>
+
+<strong>
+Warning
+</strong>
+
 <p>
-Check this section before continuing.
+Review this information before continuing.
 </p>
+
 </div>
+
+
 
 
 <div class="tf-error">
-<strong>Error</strong>
+
+<strong>
+Error
+</strong>
+
 <p>
-Something went wrong while processing.
+Something went wrong.
 </p>
+
 </div>
+
+
 
 
 <div class="tf-info">
-<strong>Information</strong>
+
+<strong>
+Information
+</strong>
+
 <p>
-Additional information is available here.
+Additional details are available.
 </p>
-</div>
-
-
-</div>
 
 </div>
 
 
 
+</div>
 
-<div class="demo-section">
 
-<h2>Actions</h2>
+</section>
+
+
+
+
+
+
+<!-- BUTTONS -->
+
+
+<section class="demo-section">
+
+
+<h2 class="demo-title">
+Buttons
+</h2>
+
 
 <div class="tf-card">
 
-<h3>Button Variants</h3>
 
-<p>
-TF-Engine buttons can be combined with cards and layouts.
-</p>
+<div class="demo-row">
 
 
 <a class="tf-btn tf-btn-primary">
-Save changes
+Save
 </a>
+
 
 <a class="tf-btn">
 Cancel
 </a>
+
 
 <a class="tf-btn tf-btn-danger">
 Delete
 </a>
 
 
-</div>
 
 </div>
 
 
+</div>
 
 
-<div class="tf-footer">
+</section>
+
+
+
+
+
+
+<!-- UTILITIES -->
+
+
+<section class="demo-section">
+
+
+<h2 class="demo-title">
+Utility Classes
+</h2>
+
+
+<div class="tf-panel">
+
+
+<div class="tf-grid tf-cols-3">
+
+
+<div class="tf-card tf-center">
+.tf-flex
+</div>
+
+
+<div class="tf-card tf-center">
+.tf-grid
+</div>
+
+
+<div class="tf-card tf-center">
+.tf-shadow
+</div>
+
+
+</div>
+
+
+</div>
+
+
+</section>
+
+
+
+
+
+
+<!-- CODE -->
+
+
+<section class="demo-section">
+
+
+<h2 class="demo-title">
+Example Usage
+</h2>
+
+
+<div class="code-box">
+
+&lt;div class="tf-engine"&gt;
+
+<br>
+
+&nbsp;&nbsp;&lt;div class="tf-card tf-accent"&gt;
+
+<br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;Content
+
+<br>
+
+&nbsp;&nbsp;&lt;/div&gt;
+
+<br>
+
+&lt;/div&gt;
+
+</div>
+
+
+</section>
+
+
+
+
+
+
+<footer class="tf-footer">
 
 TF-Engine — CSS Design System for MediaWiki
 
-</div>
+</footer>
 
 
+
 </div>
+
 
 </body>
+
 </html>
