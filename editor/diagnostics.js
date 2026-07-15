@@ -14,7 +14,7 @@
         try {
             return new Blob([str]).size;
         } catch (err) {
-            // Fallback para entornos sin Blob.
+            
             return unescape(encodeURIComponent(str)).length;
         }
     }
