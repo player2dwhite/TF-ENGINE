@@ -71,201 +71,236 @@
         "tf-ribbon", "tf-fab", "tf-active", "tf-quote", "tf-visible", "tf-in-view",
         "tf-editor-overlay"];
 
-    function isKnownClass(cls) {
-        if (KNOWN_CLASSES.indexOf(cls) !== -1) { return true; }
-        return KNOWN_UTILITY_PREFIXES.some(function (prefix) { return cls.indexOf(prefix) === 0; });
-    }
+function isKnownClass(cls) {
+    if (KNOWN_CLASSES.indexOf(cls) !== -1) { return true; }
+    return KNOWN_UTILITY_PREFIXES.some(function (prefix) { return cls.indexOf(prefix) === 0; });
+}
 
-    function diag(severity, startLine, endLine, startCol, endCol, code, message) {
-        return {
-            severity: severity, startLine: startLine, endLine: endLine,
-            startColumn: startCol, endColumn: endCol, code: code, message: message,
-            source: "tf-diagnostics"
-        };
-    }
+function diag(severity, startLine, endLine, startCol, endCol, code, message) {
+    return {
+        severity: severity, startLine: startLine, endLine: endLine,
+        startColumn: startCol, endColumn: endCol, code: code, message: message,
+        source: "tf-diagnostics"
+    };
+}
 
-    var results = [];
+var results = [];
 
-    function analyze(text) {
-        var out = [];
-        var parsed = TF.editor.parseDocument(text);
-        var tokens = parsed.tokens;
+function analyze(text) {
+    var out = [];
+    var parsed = TF.editor.parseDocument(text);
+    var tokens = parsed.tokens;
 
-        // --- Pila de apertura/cierre + contención estructural ---
-        var stack = [];
-        tokens.forEach(function (t) {
-            if (t.type === "self") {
-                emitInfoForTag(t, out);
-                checkAttrs(t, out);
-                return;
-            }
-            if (t.type === "open") {
-                stack.push(t);
-                emitInfoForTag(t, out);
-                checkAttrs(t, out);
+    // --- Opening/closing stack + structural containment ---
+    var stack = [];
 
-                if (CONTAINMENT[t.tag]) {
-                    var parent = stack[stack.length - 2];
-                    if (!parent || parent.tag !== CONTAINMENT[t.tag]) {
-                        out.push(diag("error", t.startLine, t.startLine, t.startCol, t.endCol,
-                            "tf-nesting", "<" + t.tag + "> debe ir dentro de <" + CONTAINMENT[t.tag] + ">."));
-                    }
-                }
+    tokens.forEach(function (t) {
+        if (t.type === "self") {
+            emitInfoForTag(t, out);
+            checkAttrs(t, out);
+            return;
+        }
 
-                if (t.tag.indexOf("tf-") === 0 && KNOWN_COMPONENTS.indexOf(t.tag) === -1) {
+        if (t.type === "open") {
+            stack.push(t);
+            emitInfoForTag(t, out);
+            checkAttrs(t, out);
+
+            if (CONTAINMENT[t.tag]) {
+                var parent = stack[stack.length - 2];
+
+                if (!parent || parent.tag !== CONTAINMENT[t.tag]) {
                     out.push(diag("error", t.startLine, t.startLine, t.startCol, t.endCol,
-                        "tf-unknown-component", "'<" + t.tag + ">' no es un componente TF-Engine válido."));
+                        "tf-nesting", "<" + t.tag + "> must be inside <" + CONTAINMENT[t.tag] + ">."));
                 }
-                return;
             }
-            // closing
-            if (!stack.length) {
+
+            if (t.tag.indexOf("tf-") === 0 && KNOWN_COMPONENTS.indexOf(t.tag) === -1) {
                 out.push(diag("error", t.startLine, t.startLine, t.startCol, t.endCol,
-                    "tf-unexpected-close", "Etiqueta de cierre inesperada '</" + t.tag + ">' sin apertura previa."));
-                return;
+                    "tf-unknown-component", "'<" + t.tag + ">' is not a valid TF-Engine component."));
             }
-            var open = stack[stack.length - 1];
-            if (open.tag !== t.tag) {
-                out.push(diag("error", t.startLine, t.startLine, t.startCol, t.endCol,
-                    "tf-mismatched-close", "Se esperaba '</" + open.tag + ">' pero se encontró '</" + t.tag + ">'."));
-                // se asume que la apertura de arriba se cierra igualmente, para no
-                // desincronizar toda la pila por una sola etiqueta mal escrita.
+
+            return;
+        }
+
+        // closing
+        if (!stack.length) {
+            out.push(diag("error", t.startLine, t.startLine, t.startCol, t.endCol,
+                "tf-unexpected-close", "Unexpected closing tag '</" + t.tag + ">' without a previous opening tag."));
+            return;
+        }
+
+        var open = stack[stack.length - 1];
+
+        if (open.tag !== t.tag) {
+            out.push(diag("error", t.startLine, t.startLine, t.startCol, t.endCol,
+                "tf-mismatched-close", "Expected '</" + open.tag + ">' but found '</" + t.tag + ">'."));
+                // Assumes the upper opening tag is closed anyway to avoid
+                // desynchronizing the entire stack because of a single malformed tag.
             }
+
             var matchIndex = -1;
             for (var i = stack.length - 1; i >= 0; i--) {
                 if (stack[i].tag === t.tag) { matchIndex = i; break; }
             }
+
             if (matchIndex !== -1) {
                 var openTag = stack[matchIndex];
                 var betweenIsEmpty = text.slice(openTag.end, t.start).trim() === "";
+
                 if (betweenIsEmpty && KNOWN_COMPONENTS.indexOf(t.tag) !== -1) {
                     out.push(diag("warning", openTag.startLine, t.endLine, openTag.startCol, t.endCol,
-                        "tf-empty-component", "<" + t.tag + "> está vacío."));
+                        "tf-empty-component", "<" + t.tag + "> is empty."));
                 }
+
                 stack.splice(matchIndex, stack.length - matchIndex);
             }
         });
 
         stack.forEach(function (open) {
             out.push(diag("error", open.startLine, open.startLine, open.startCol, open.endCol,
-                "tf-unclosed", "Falta la etiqueta de cierre para '<" + open.tag + ">'."));
+                "tf-unclosed", "Missing closing tag for '<" + open.tag + ">'."));
         });
 
-        // --- IDs duplicados ---
+        // --- Duplicate IDs ---
         var idPositions = {};
+
         tokens.forEach(function (t) {
             if (!t.attrs || t.attrs.id === undefined) { return; }
+
             var id = t.attrs.id;
+
             if (!id) { return; }
+
             (idPositions[id] = idPositions[id] || []).push(t);
         });
+
         Object.keys(idPositions).forEach(function (id) {
             var occurrences = idPositions[id];
+
             if (occurrences.length > 1) {
                 occurrences.forEach(function (t) {
                     out.push(diag("error", t.startLine, t.startLine, t.startCol, t.endCol,
-                        "tf-duplicate-id", "id=\"" + id + "\" está repetido " + occurrences.length + " veces."));
+                        "tf-duplicate-id", "id=\"" + id + "\" is repeated " + occurrences.length + " times."));
                 });
             }
         });
-
-        // --- Clases: desconocidas / duplicadas, por token ---
+                
+         // --- Classes: unknown / duplicated, per token ---
         tokens.forEach(function (t) {
             if (!t.attrs || t.attrs.class === undefined) { return; }
+
             var raw = t.attrs.class || "";
+
             if (raw.trim() === "") {
                 out.push(diag("warning", t.startLine, t.startLine, t.startCol, t.endCol,
-                    "tf-empty-attr", "El atributo class está vacío."));
+                    "tf-empty-attr", "The class attribute is empty."));
                 return;
             }
+
             var seen = {};
+
             raw.split(/\s+/).filter(Boolean).forEach(function (cls) {
                 if (seen[cls]) {
                     out.push(diag("warning", t.startLine, t.startLine, t.startCol, t.endCol,
-                        "tf-duplicate-class", "La clase '" + cls + "' está repetida."));
+                        "tf-duplicate-class", "The class '" + cls + "' is repeated."));
                 } else {
                     seen[cls] = true;
                 }
+
                 if (cls.indexOf("tf-") === 0 && !isKnownClass(cls)) {
                     out.push(diag("warning", t.startLine, t.startLine, t.startCol, t.endCol,
-                        "tf-unknown-class", "Clase '" + cls + "' no reconocida en TF-Engine."));
+                        "tf-unknown-class", "Class '" + cls + "' is not recognized in TF-Engine."));
                 }
             });
         });
 
-        // --- Atributos vacíos genéricos + estilo inline grande ---
+        // --- Generic empty attributes + large inline styles ---
         tokens.forEach(function (t) {
             if (!t.attrs) { return; }
+
             Object.keys(t.attrs).forEach(function (name) {
                 if (t.attrs[name] === "" && name !== "class") {
                     out.push(diag("warning", t.startLine, t.startLine, t.startCol, t.endCol,
-                        "tf-empty-attr", "El atributo '" + name + "' está vacío."));
+                        "tf-empty-attr", "The attribute '" + name + "' is empty."));
                 }
             });
+
             if (t.attrs.style && t.attrs.style.length > 300) {
                 out.push(diag("warning", t.startLine, t.startLine, t.startCol, t.endCol,
-                    "tf-large-inline-style", "Estilo inline muy largo (" + t.attrs.style.length + " caracteres)."));
+                    "tf-large-inline-style", "Inline style is too long (" + t.attrs.style.length + " characters)."));
             }
+
             if (t.attrs.style) {
                 var declared = {};
+
                 t.attrs.style.split(";").forEach(function (decl) {
                     var m = /^\s*(--[\w-]+)\s*:/.exec(decl);
+
                     if (m) {
                         if (declared[m[1]]) {
                             out.push(diag("warning", t.startLine, t.startLine, t.startCol, t.endCol,
-                                "tf-duplicate-variable", "La variable '" + m[1] + "' está definida más de una vez en este style."));
+                                "tf-duplicate-variable", "The variable '" + m[1] + "' is defined more than once in this style."));
                         }
+
                         declared[m[1]] = true;
                     }
                 });
             }
         });
-
-        // --- var(--xxx) desconocidas + info de detección + sintaxis obsoleta ---
+        
+        // --- Unknown var(--xxx) variables + detection info + deprecated syntax ---
         var lineOffset = 0;
         text.split("\n").forEach(function (lineText, idx) {
             var lineNo = idx + 1;
             var varRe = /var\(\s*--([\w-]+)/g;
             var vm;
+
             while ((vm = varRe.exec(lineText))) {
                 out.push(diag("info", lineNo, lineNo, vm.index + 1, vm.index + vm[0].length + 1,
-                    "tf-css-variable", "Variable CSS detectada: --" + vm[1]));
+                    "tf-css-variable", "CSS variable detected: --" + vm[1]));
+
                 if (KNOWN_VARS.indexOf(vm[1]) === -1) {
                     out.push(diag("warning", lineNo, lineNo, vm.index + 1, vm.index + vm[0].length + 1,
-                        "tf-unknown-variable", "--" + vm[1] + " no está definida en variables.css."));
+                        "tf-unknown-variable", "--" + vm[1] + " is not defined in variables.css."));
                 }
             }
+
             if (/<center>|<font[\s>]/i.test(lineText)) {
                 out.push(diag("warning", lineNo, lineNo, 1, lineText.length + 1,
-                    "tf-deprecated-syntax", "Etiqueta HTML obsoleta detectada en esta línea."));
+                    "tf-deprecated-syntax", "Deprecated HTML tag detected on this line."));
             }
         });
+
         void lineOffset;
 
-        // --- Info: tema y animaciones detectadas ---
         tokens.forEach(function (t) {
             if (!t.attrs) { return; }
+
             if (t.attrs["data-theme"]) {
                 out.push(diag("info", t.startLine, t.startLine, t.startCol, t.endCol,
-                    "tf-theme-detected", "Tema detectado: " + t.attrs["data-theme"]));
+                    "tf-theme-detected", "Theme detected: " + t.attrs["data-theme"]));
             }
+
             var cls = t.attrs.class || "";
             var themeMatch = /\btf-theme-(\S+)\b/.exec(cls);
+
             if (themeMatch) {
                 out.push(diag("info", t.startLine, t.startLine, t.startCol, t.endCol,
-                    "tf-theme-detected", "Tema detectado: " + themeMatch[1]));
+                    "tf-theme-detected", "Theme detected: " + themeMatch[1]));
             }
+
             ["tf-fade", "tf-slide", "tf-zoom", "tf-pulse"].forEach(function (animClass) {
                 if ((" " + cls + " ").indexOf(" " + animClass + " ") !== -1) {
                     out.push(diag("info", t.startLine, t.startLine, t.startCol, t.endCol,
-                        "tf-animation-detected", "Animación detectada: " + animClass));
+                        "tf-animation-detected", "Animation detected: " + animClass));
                 }
             });
         });
 
         return out;
     }
-
+        
  function emitInfoForTag(t, out) {
     if (KNOWN_COMPONENTS.indexOf(t.tag) !== -1) {
         out.push(diag("info", t.startLine, t.startLine, t.startCol, t.endCol,
