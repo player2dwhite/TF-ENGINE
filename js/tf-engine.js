@@ -1,18 +1,38 @@
 /*!
  * TF-ENGINE JS CORE
  * ---------------------------------------------------------------------
+ * Optional JavaScript layer for TF-Engine (CSS Design System).
+ * TF-Engine's CSS works fully standalone; this file only adds an
+ * "Enhanced Mode" (dynamic themes, component mounting, CSS variable
+ * bridge, scroll-in animations via IntersectionObserver, and an API
+ * future editor modules can hook into) for whoever loads it.
+ *
+ * Compatibility: MediaWiki / Fandom, Common.js, mw.loader.load().
+ * No external frameworks — vanilla JS (ES5-friendly).
+ *
+ * Namespace: window.TFEngine
+ * Other globals used: window.TF_DEFAULTS (defaults.js), window.TF_CONFIG (config.js)
+ * ---------------------------------------------------------------------
+ * Config priority order (lowest to highest):
+ *   1. TF_DEFAULTS   (defaults.js — factory settings, not user-edited)
+ *   2. TF_CONFIG     (config.js — user overrides, sparse by design)
+ *   3. data-attributes on the first .tf-engine found
+ *   4. Runtime API   — TFEngine.setConfig(...)
+ * All layers deep-merge: a nested value can be overridden without
+ * repeating its whole parent object.
+ * ---------------------------------------------------------------------
  * Recommended load order (see /js/README.md):
- *   1. tf-engine.js          (this file)
- *   2. config.js
- *   3. utils/dom.js
- *   4. utils/storage.js
- *   5. utils/theme.js
- *   6. utils/templates.js
- *   7. components/index.js
- *   8. components/card.js, panel.js, alert.js, badge.js, infobox.js, tabs.js
- *   9. components/tabs-behavior.js
- *  10. utils/animations.js
- *  11. editor/editor.js
+ *   1. tf-engine.js
+ *   2. defaults.js
+ *   3. config.js
+ *   4. utils/dom.js, utils/storage.js, utils/theme.js, utils/templates.js
+ *   5. components/index.js
+ *   6. components/card.js, panel.js, alert.js, badge.js, infobox.js, tabs.js
+ *   7. utils/animations.js
+ *   8. editor/editor.js
+ * (tf-engine.js only actually runs init() on DOMContentLoaded, so the
+ * exact order of the globals-only files above it doesn't break anything
+ * as long as they all finish executing before that event fires.)
  * ---------------------------------------------------------------------
  */
 (function (global) {
@@ -22,7 +42,7 @@
         return;
     }
 
-    var VERSION = "2.1.0";
+    var VERSION = "2.2.0";
 
     var TFEngine = global.TFEngine || {};
 
@@ -41,6 +61,18 @@
         return !!value && typeof value === "object" && !Array.isArray(value);
     }
 
+    function deepMerge(target, source) {
+        if (!isPlainObject(source)) { return target; }
+        Object.keys(source).forEach(function (key) {
+            if (isPlainObject(source[key]) && isPlainObject(target[key])) {
+                deepMerge(target[key], source[key]);
+            } else {
+                target[key] = source[key];
+            }
+        });
+        return target;
+    }
+
     // ------------------------------------------------------------------
     // Extension namespaces filled in by the various modules.
     // ------------------------------------------------------------------
@@ -48,15 +80,20 @@
     TFEngine.components = TFEngine.components || {};
     TFEngine.editor = TFEngine.editor || {};
 
-    TFEngine._modules = TFEngine._modules || [];       // [{name, mod, priority, dependencies, enabled, lazy, version, status}]
+    TFEngine._modules = TFEngine._modules || [];
     TFEngine._listeners = TFEngine._listeners || {};
-    TFEngine._mounted = TFEngine._mounted || [];        // already-mounted elements, to avoid re-mounting
+    TFEngine._mounted = TFEngine._mounted || [];
+    TFEngine._themes = TFEngine._themes || {};
     TFEngine._observer = null;
     TFEngine._initialized = false;
 
+    TFEngine.utils.deepMerge = deepMerge;
+
     // ==================================================================
-    // 1. CORE UTILITIES — TFEngine.utils.merge (Object.assign fallback)
+    // 1. CORE UTILITIES — TFEngine.utils.merge (shallow, Object.assign fallback)
     // ==================================================================
+    // Note: this is a SHALLOW merge for general-purpose object combining
+    // (options objects, etc). Config merging uses deepMerge() above.
 
     TFEngine.utils.merge = function (target) {
         target = target || {};
@@ -105,27 +142,24 @@
     // 3. CONFIGURATION SYSTEM
     // ==================================================================
 
-
     TFEngine.config = TFEngine.config || {
-        theme: "default",       // default | blue | red | green | light
-        animation: true,        // enables animations/observer
-        rounded: true,          // reserved for future radius tweaks
-        autoComponents: true,   // auto-mounts registered components
-        observe: true,          // enables IntersectionObserver for scroll animations
-        debug: false,           // enables TFEngine.log()
-        vars: {}                // JS -> CSS variable bridge (--xx)
+        theme: "default",
+        animation: true,
+        rounded: true,
+        autoComponents: true,
+        observe: true,
+        debug: false,
+        vars: {},
+        observer: {},
+        storage: {},
+        accessibility: {},
+        performance: {},
+        editor: {},
+        components: {}
     };
 
     TFEngine.mergeConfig = function (userConfig) {
-        if (!isPlainObject(userConfig)) { return this; }
-        var self = this;
-        Object.keys(userConfig).forEach(function (key) {
-            if (key === "vars" && isPlainObject(userConfig.vars)) {
-                self.config.vars = self.utils.merge({}, self.config.vars, userConfig.vars);
-            } else {
-                self.config[key] = userConfig[key];
-            }
-        });
+        deepMerge(this.config, userConfig);
         return this;
     };
 
@@ -143,6 +177,11 @@
 
     TFEngine.getConfig = function (key) {
         return key ? this.config[key] : this.config;
+    };
+
+    /** Resolved config for one component: its own defaults merged with any override layers. */
+    TFEngine.getComponentConfig = function (name) {
+        return (this.config.components && this.config.components[name]) || {};
     };
 
     // ==================================================================
@@ -220,7 +259,7 @@
             enabled: options.enabled !== false,
             lazy: !!options.lazy,
             version: options.version || "1.0.0",
-            status: "registered"   // registered -> ready | error | disabled
+            status: "registered"
         };
         this._modules.push(entry);
 
@@ -286,9 +325,9 @@
     // 6. CSS VARIABLE BRIDGE
     // ==================================================================
 
-    TFEngine.applyVariables = function () {
+    TFEngine.applyVariables = function (source) {
         var root = document.documentElement;
-        var vars = this.config.vars;
+        var vars = source || this.config.vars;
         if (!isPlainObject(vars)) { return this; }
         var self = this;
         Object.keys(vars).forEach(function (key) {
@@ -328,6 +367,15 @@
     // 7. THEME MANAGER
     // ==================================================================
 
+    TFEngine.registerTheme = function (name, vars) {
+        if (!name || !isPlainObject(vars)) {
+            this.warn("invalid theme '" + name + "'.");
+            return this;
+        }
+        this._themes[name] = vars;
+        return this;
+    };
+
     TFEngine.setTheme = function (name) {
         if (!name) { return this; }
         this.config.theme = name;
@@ -341,6 +389,10 @@
                 el.className += " tf-theme-" + name;
             }
         });
+
+        if (this._themes[name]) {
+            this.applyVariables(this._themes[name]);
+        }
 
         this.emit("themeChange", { theme: name });
         return this;
@@ -438,25 +490,21 @@
         }
 
         return {
-
             get: function (key, kind) {
                 var store = backend(kind);
                 var raw = store ? store.getItem(key) : (Object.prototype.hasOwnProperty.call(memory, key) ? memory[key] : null);
                 if (raw === null || raw === undefined) { return null; }
                 try { return JSON.parse(raw); } catch (err) { return raw; }
             },
-
             set: function (key, value, kind) {
                 var raw = JSON.stringify(value);
                 var store = backend(kind);
                 if (store) { store.setItem(key, raw); } else { memory[key] = raw; }
             },
-
             remove: function (key, kind) {
                 var store = backend(kind);
                 if (store) { store.removeItem(key); } else { delete memory[key]; }
             },
-            
             clear: function (kind) {
                 var store = backend(kind);
                 if (store) { store.clear(); } else { memory = {}; }
@@ -468,12 +516,20 @@
     // 10. COMPONENT MOUNTING
     // ==================================================================
 
+
     TFEngine.registerComponent = function (name, def) {
         if (!def || !def.selector) {
             this.warn("component '" + name + "' is invalid (missing selector).");
             return this;
         }
         this.components[name] = def;
+
+        if (isPlainObject(def.defaults)) {
+            var resolved = deepMerge({}, def.defaults);
+            deepMerge(resolved, this.config.components[name] || {});
+            this.config.components[name] = resolved;
+        }
+
         if (this._initialized && this.config.autoComponents) {
             this._mountComponent(name);
         }
@@ -528,7 +584,43 @@
     };
 
     // ==================================================================
-    // 11. SCROLL OBSERVER (animations on viewport entry)
+    // 11. PLUGINS
+    // ==================================================================
+    // A plugin bundles components/modules/themes/commands into one
+    // registration call, so a whole feature pack can be added by
+    // loading one file and calling registerPlugin() — no core edits.
+
+    TFEngine.registerPlugin = function (name, plugin) {
+        if (!plugin) {
+            this.warn("invalid plugin '" + name + "'.");
+            return this;
+        }
+        var self = this;
+        if (isPlainObject(plugin.components)) {
+            Object.keys(plugin.components).forEach(function (key) {
+                self.registerComponent(key, plugin.components[key]);
+            });
+        }
+        if (isPlainObject(plugin.modules)) {
+            Object.keys(plugin.modules).forEach(function (key) {
+                var mod = plugin.modules[key];
+                self.registerModule(key, mod, mod.options);
+            });
+        }
+        if (isPlainObject(plugin.themes)) {
+            Object.keys(plugin.themes).forEach(function (key) {
+                self.registerTheme(key, plugin.themes[key]);
+            });
+        }
+        if (isPlainObject(plugin.commands)) {
+            this.editor.commands = this.utils.merge(this.editor.commands || {}, plugin.commands);
+        }
+        this.emit("pluginRegistered", { name: name });
+        return this;
+    };
+
+    // ==================================================================
+    // 12. SCROLL OBSERVER (animations on viewport entry)
     // ==================================================================
 
     TFEngine._initObserver = function () {
@@ -537,22 +629,23 @@
             this.warn("IntersectionObserver unavailable, skipping scroll animations.");
             return;
         }
+        var opts = this.config.observer || {};
         var self = this;
         this._observer = new IntersectionObserver(function (entries) {
             entries.forEach(function (entry) {
                 if (entry.isIntersecting) {
                     entry.target.classList.add("tf-in-view");
-                    self._observer.unobserve(entry.target);
+                    if (opts.once !== false) { self._observer.unobserve(entry.target); }
                 }
             });
-        }, { threshold: 0.15 });
+        }, { threshold: typeof opts.threshold === "number" ? opts.threshold : 0.15 });
 
-        utils.queryAll(".tf-fade, .tf-slide, .tf-zoom, .tf-pulse, [data-tf-observe]")
+        utils.queryAll(opts.selector || ".tf-fade, .tf-slide, .tf-zoom, .tf-pulse, [data-tf-observe]")
             .forEach(function (el) { self._observer.observe(el); });
     };
 
     // ==================================================================
-    // 12. .tf-engine CONTAINER DETECTION
+    // 13. .tf-engine CONTAINER DETECTION
     // ==================================================================
 
     TFEngine.getEngines = function () {
@@ -580,7 +673,7 @@
     };
 
     // ==================================================================
-    // 13. RUNTIME API — version / state / destroy / reload
+    // 14. RUNTIME API — version / state / destroy / reload
     // ==================================================================
 
     TFEngine.getVersion = function () { return this.version; };
@@ -610,7 +703,7 @@
     };
 
     // ==================================================================
-    // 14. INIT — single entry point
+    // 15. INIT — single entry point
     // ==================================================================
 
     TFEngine.init = function () {
@@ -621,23 +714,33 @@
 
         this.emit("beforeInit", {});
 
+        // 1. Factory defaults (defaults.js).
+        if (global.TF_DEFAULTS) {
+            this.mergeConfig(global.TF_DEFAULTS);
+        }
+
+        // 2. User configuration (config.js).
         if (global.TF_CONFIG) {
             this.mergeConfig(global.TF_CONFIG);
         }
 
+        // 3. Per-element overrides (first .tf-engine on the page).
         var engines = this.getEngines();
         if (engines.length) {
             this.loadElementConfig(engines[0]);
         }
 
+        // 4. Config -> CSS variable bridge, then theme.
         this.applyVariables();
         if (this.config.theme && this.config.theme !== "default") {
             this.setTheme(this.config.theme);
         }
 
+        // 5. Mount components, start scroll observer.
         if (this.config.autoComponents) { this.mount(); }
         this._initObserver();
 
+        // 6. Run every registered module, respecting priority and dependencies.
         this._runAllModules();
 
         this._initialized = true;
