@@ -1,35 +1,61 @@
 /*!
  * TF-ENGINE — config.js
  * ---------------------------------------------------------------------
-*/
+ * User configuration for TF-ENGINE.
+ *
+ * This is the only file most users should edit.
+ *
+ * TF-ENGINE automatically merges this object with its internal defaults,
+ * so only specify the values you actually want to change.
+ *
+ * Configuration priority (lowest → highest):
+ *
+ *   1. Internal defaults (tf-engine.js)
+ *   2. TF_CONFIG (this file)
+ *   3. data-* attributes on .tf-engine containers
+ *   4. TFEngine.setConfig() at runtime
+ *
+ * Objects are merged deeply, allowing individual nested properties to
+ * be overridden without redefining the entire section.
+ *
+ * Leaving this file empty is perfectly valid.
+ * ---------------------------------------------------------------------
+ */
+
 (function (global) {
     "use strict";
 
-    global.TF_CONFIG = global.TF_CONFIG || {
-// Main theme applied when the page loads.
-// Available values ​​according to variables.css: default | blue | red | green | light.
-        theme: "default",
+    // Preserve any configuration created before this file loads.
+    global.TF_CONFIG = global.TF_CONFIG || {};
 
-        // Activates engine animations (fade, reveal on scroll, tabs).
-        animation: true,
+    /*
+    ----------------------------------------------------------------------
+    Examples
+    ----------------------------------------------------------------------
 
-        // Enables rounded corners of components (reserved for future adjustments).
-        rounded: true,
+    Theme
+        theme: "blue",
 
-        // Automatic assembly of registered components (<tf-card>, etc.).
-        autoComponents: true,
+    Enable debug logging
+        debug: true,
 
-        // Activate IntersectionObserver for scrolling animations.
-        observe: true,
+    CSS variables
+        vars: {
+            ac: "#4a90e2",
+            rd: "12px"
+        },
 
-        // Debug mode: Enables TFEngine.log().
-        debug: false,
+    Observer
+        observer: {
+            threshold: 0.25
+        },
 
-// Optional dynamic CSS variables — JS bridge -> :root.
-// Example:
-// ac: "#4a90e2",
-// rd: "12px"
-        vars: {}
-    };
+    Component overrides
+        components: {
+            card: {
+                hoverLift: false
+            }
+        }
+    */
 
 })(window);
