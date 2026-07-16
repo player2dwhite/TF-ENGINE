@@ -1,40 +1,4 @@
-/*!
- * TF-ENGINE JS CORE
- * ---------------------------------------------------------------------
- * Optional JavaScript layer for TF-Engine (CSS Design System).
- * TF-Engine's CSS works fully standalone; this file only adds an
- * "Enhanced Mode" (dynamic themes, component mounting, CSS variable
- * bridge, scroll-in animations via IntersectionObserver, and an API
- * future editor modules can hook into) for whoever loads it.
- *
- * Compatibility: MediaWiki / Fandom, Common.js, mw.loader.load().
- * No external frameworks — vanilla JS (ES5-friendly).
- *
- * Namespace: window.TFEngine
- * Other globals used: window.TF_DEFAULTS (defaults.js), window.TF_CONFIG (config.js)
- * ---------------------------------------------------------------------
- * Config priority order (lowest to highest):
- *   1. TF_DEFAULTS   (defaults.js — factory settings, not user-edited)
- *   2. TF_CONFIG     (config.js — user overrides, sparse by design)
- *   3. data-attributes on the first .tf-engine found
- *   4. Runtime API   — TFEngine.setConfig(...)
- * All layers deep-merge: a nested value can be overridden without
- * repeating its whole parent object.
- * ---------------------------------------------------------------------
- * Recommended load order (see /js/README.md):
- *   1. tf-engine.js
- *   2. defaults.js
- *   3. config.js
- *   4. utils/dom.js, utils/storage.js, utils/theme.js, utils/templates.js
- *   5. components/index.js
- *   6. components/card.js, panel.js, alert.js, badge.js, infobox.js, tabs.js
- *   7. utils/animations.js
- *   8. editor/editor.js
- * (tf-engine.js only actually runs init() on DOMContentLoaded, so the
- * exact order of the globals-only files above it doesn't break anything
- * as long as they all finish executing before that event fires.)
- * ---------------------------------------------------------------------
- */
+/*! TF-ENGINE JS CORE */
 (function (global) {
     "use strict";
 
@@ -48,10 +12,6 @@
 
     TFEngine.__core = true;
     TFEngine.version = VERSION;
-
-    // ------------------------------------------------------------------
-    // Internal helpers (not public)
-    // ------------------------------------------------------------------
 
     function toArray(arrayLike) {
         return Array.prototype.slice.call(arrayLike);
@@ -73,9 +33,6 @@
         return target;
     }
 
-    // ------------------------------------------------------------------
-    // Extension namespaces filled in by the various modules.
-    // ------------------------------------------------------------------
     TFEngine.utils = TFEngine.utils || {};
     TFEngine.components = TFEngine.components || {};
     TFEngine.editor = TFEngine.editor || {};
@@ -88,12 +45,6 @@
     TFEngine._initialized = false;
 
     TFEngine.utils.deepMerge = deepMerge;
-
-    // ==================================================================
-    // 1. CORE UTILITIES — TFEngine.utils.merge (shallow, Object.assign fallback)
-    // ==================================================================
-    // Note: this is a SHALLOW merge for general-purpose object combining
-    // (options objects, etc). Config merging uses deepMerge() above.
 
     TFEngine.utils.merge = function (target) {
         target = target || {};
@@ -112,11 +63,7 @@
         }
         return target;
     };
-
-    // ==================================================================
-    // 2. LOGGING — TFEngine.log / warn / error
-    // ==================================================================
-
+    
     TFEngine.log = function () {
         if (this.config.debug && global.console && console.log) {
             console.log.apply(console, ["[TFEngine]"].concat(toArray(arguments)));
@@ -137,10 +84,6 @@
         }
         return this;
     };
-
-    // ==================================================================
-    // 3. CONFIGURATION SYSTEM
-    // ==================================================================
 
     TFEngine.config = TFEngine.config || {
         theme: "default",
@@ -179,14 +122,9 @@
         return key ? this.config[key] : this.config;
     };
 
-    /** Resolved config for one component: its own defaults merged with any override layers. */
     TFEngine.getComponentConfig = function (name) {
         return (this.config.components && this.config.components[name]) || {};
     };
-
-    // ==================================================================
-    // 4. EVENTS — on / once / off / emit
-    // ==================================================================
 
     TFEngine.on = function (event, callback) {
         if (typeof callback !== "function") { return this; }
@@ -233,10 +171,6 @@
         });
         return this;
     };
-
-    // ==================================================================
-    // 5. MODULE REGISTRATION AND LOADING
-    // ==================================================================
 
     TFEngine._findModule = function (name) {
         for (var i = 0; i < this._modules.length; i++) {
@@ -321,10 +255,6 @@
         }
     };
 
-    // ==================================================================
-    // 6. CSS VARIABLE BRIDGE
-    // ==================================================================
-
     TFEngine.applyVariables = function (source) {
         var root = document.documentElement;
         var vars = source || this.config.vars;
@@ -363,10 +293,6 @@
         return this;
     };
 
-    // ==================================================================
-    // 7. THEME MANAGER
-    // ==================================================================
-
     TFEngine.registerTheme = function (name, vars) {
         if (!name || !isPlainObject(vars)) {
             this.warn("invalid theme '" + name + "'.");
@@ -397,10 +323,6 @@
         this.emit("themeChange", { theme: name });
         return this;
     };
-
-    // ==================================================================
-    // 8. DOM UTILITIES — TFEngine.utils.*
-    // ==================================================================
 
     var utils = TFEngine.utils;
 
@@ -470,10 +392,6 @@
         return !!el && !!fn && fn.call(el, selector);
     };
 
-    // ==================================================================
-    // 9. STORAGE — TFEngine.storage
-    // ==================================================================
-
     TFEngine.storage = (function () {
         var memory = {};
 
@@ -511,11 +429,6 @@
             }
         };
     })();
-
-    // ==================================================================
-    // 10. COMPONENT MOUNTING
-    // ==================================================================
-
 
     TFEngine.registerComponent = function (name, def) {
         if (!def || !def.selector) {
@@ -583,13 +496,6 @@
         return this;
     };
 
-    // ==================================================================
-    // 11. PLUGINS
-    // ==================================================================
-    // A plugin bundles components/modules/themes/commands into one
-    // registration call, so a whole feature pack can be added by
-    // loading one file and calling registerPlugin() — no core edits.
-
     TFEngine.registerPlugin = function (name, plugin) {
         if (!plugin) {
             this.warn("invalid plugin '" + name + "'.");
@@ -619,10 +525,6 @@
         return this;
     };
 
-    // ==================================================================
-    // 12. SCROLL OBSERVER (animations on viewport entry)
-    // ==================================================================
-
     TFEngine._initObserver = function () {
         if (!this.config.observe || !this.config.animation) { return; }
         if (typeof global.IntersectionObserver !== "function") {
@@ -643,10 +545,6 @@
         utils.queryAll(opts.selector || ".tf-fade, .tf-slide, .tf-zoom, .tf-pulse, [data-tf-observe]")
             .forEach(function (el) { self._observer.observe(el); });
     };
-
-    // ==================================================================
-    // 13. .tf-engine CONTAINER DETECTION
-    // ==================================================================
 
     TFEngine.getEngines = function () {
         return utils.queryAll(".tf-engine");
@@ -671,10 +569,6 @@
         }
         return this;
     };
-
-    // ==================================================================
-    // 14. RUNTIME API — version / state / destroy / reload
-    // ==================================================================
 
     TFEngine.getVersion = function () { return this.version; };
 
@@ -702,10 +596,6 @@
         return this.init();
     };
 
-    // ==================================================================
-    // 15. INIT — single entry point
-    // ==================================================================
-
     TFEngine.init = function () {
         if (this._initialized) {
             this.warn("already initialized, skipping. Use reload() to restart.");
@@ -714,33 +604,27 @@
 
         this.emit("beforeInit", {});
 
-        // 1. Factory defaults (defaults.js).
         if (global.TF_DEFAULTS) {
             this.mergeConfig(global.TF_DEFAULTS);
         }
 
-        // 2. User configuration (config.js).
         if (global.TF_CONFIG) {
             this.mergeConfig(global.TF_CONFIG);
         }
 
-        // 3. Per-element overrides (first .tf-engine on the page).
         var engines = this.getEngines();
         if (engines.length) {
             this.loadElementConfig(engines[0]);
         }
 
-        // 4. Config -> CSS variable bridge, then theme.
         this.applyVariables();
         if (this.config.theme && this.config.theme !== "default") {
             this.setTheme(this.config.theme);
         }
 
-        // 5. Mount components, start scroll observer.
         if (this.config.autoComponents) { this.mount(); }
         this._initObserver();
 
-        // 6. Run every registered module, respecting priority and dependencies.
         this._runAllModules();
 
         this._initialized = true;
