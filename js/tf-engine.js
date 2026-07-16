@@ -33,16 +33,16 @@
         return target;
     }
 
-TFEngine.utils      = TFEngine.utils      || {};
+TFEngine.utils = TFEngine.utils || {};
 TFEngine.components = TFEngine.components || {};
-TFEngine.editor     = TFEngine.editor     || {};
+TFEngine.editor = TFEngine.editor || {};
 
-TFEngine._modules     = TFEngine._modules     || [];
-TFEngine._listeners   = TFEngine._listeners   || {};
-TFEngine._mounted     = TFEngine._mounted     || [];
-TFEngine._themes      = TFEngine._themes      || {};
-TFEngine._observer    = TFEngine._observer    || null;
-TFEngine._initialized = TFEngine._initialized || false;
+TFEngine._modules = TFEngine._modules || [];
+TFEngine._listeners = TFEngine._listeners || {};
+TFEngine._mounted = TFEngine._mounted || [];
+TFEngine._themes = TFEngine._themes || {};
+TFEngine._observer = null;
+TFEngine._initialized = false;
 
 TFEngine.utils.deepMerge = deepMerge;
 
