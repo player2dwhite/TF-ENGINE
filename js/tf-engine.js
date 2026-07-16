@@ -33,36 +33,39 @@
         return target;
     }
 
-    TFEngine.utils = TFEngine.utils || {};
-    TFEngine.components = TFEngine.components || {};
-    TFEngine.editor = TFEngine.editor || {};
+TFEngine.utils      = TFEngine.utils      || {};
+TFEngine.components = TFEngine.components || {};
+TFEngine.editor     = TFEngine.editor     || {};
 
-    TFEngine._modules = TFEngine._modules || [];
-    TFEngine._listeners = TFEngine._listeners || {};
-    TFEngine._mounted = TFEngine._mounted || [];
-    TFEngine._themes = TFEngine._themes || {};
-    TFEngine._observer = null;
-    TFEngine._initialized = false;
+TFEngine._modules     = TFEngine._modules     || [];
+TFEngine._listeners   = TFEngine._listeners   || {};
+TFEngine._mounted     = TFEngine._mounted     || [];
+TFEngine._themes      = TFEngine._themes      || {};
+TFEngine._observer    = TFEngine._observer    || null;
+TFEngine._initialized = TFEngine._initialized || false;
 
-    TFEngine.utils.deepMerge = deepMerge;
+TFEngine.utils.deepMerge = deepMerge;
 
-    TFEngine.utils.merge = function (target) {
-        target = target || {};
-        for (var i = 1; i < arguments.length; i++) {
-            var src = arguments[i];
-            if (!src) { continue; }
-            if (typeof Object.assign === "function") {
-                Object.assign(target, src);
-            } else {
-                for (var key in src) {
-                    if (Object.prototype.hasOwnProperty.call(src, key)) {
-                        target[key] = src[key];
-                    }
+TFEngine.utils.merge = function (target) {
+    target = target || {};
+
+    for (var i = 1; i < arguments.length; i++) {
+        var src = arguments[i];
+        if (!src) { continue; }
+
+        if (typeof Object.assign === "function") {
+            Object.assign(target, src);
+        } else {
+            for (var key in src) {
+                if (Object.prototype.hasOwnProperty.call(src, key)) {
+                    target[key] = src[key];
                 }
             }
         }
-        return target;
-    };
+    }
+
+    return target;
+};
     
     TFEngine.log = function () {
         if (this.config.debug && global.console && console.log) {
