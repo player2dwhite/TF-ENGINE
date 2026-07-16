@@ -1,14 +1,4 @@
-/*!
- * TF-ENGINE — editor/diagnostics.js
- * ---------------------------------------------------------------------
- * Analiza el documento del editor y produce una lista de diagnósticos
- * ({ severity, startLine, endLine, startColumn, endColumn, code,
- * message, source }). Nunca modifica el documento, nunca sugiere
- * arreglos automáticos. Se apoya en TFEngine.editor.parseDocument()
- * (del controlador) para tokenizar; no llama a otros módulos del
- * editor directamente — solo emite "diagnosticsUpdated".
- * ---------------------------------------------------------------------
- */
+/*!* TF-ENGINE — editor/diagnostics.js*/
 (function (TF) {
     "use strict";
     if (!TF) { return; }
@@ -91,7 +81,6 @@ function analyze(text) {
     var parsed = TF.editor.parseDocument(text);
     var tokens = parsed.tokens;
 
-    // --- Opening/closing stack + structural containment ---
     var stack = [];
 
     tokens.forEach(function (t) {
@@ -123,7 +112,6 @@ function analyze(text) {
             return;
         }
 
-        // closing
         if (!stack.length) {
             out.push(diag("error", t.startLine, t.startLine, t.startCol, t.endCol,
                 "tf-unexpected-close", "Unexpected closing tag '</" + t.tag + ">' without a previous opening tag."));
@@ -135,8 +123,7 @@ function analyze(text) {
         if (open.tag !== t.tag) {
             out.push(diag("error", t.startLine, t.startLine, t.startCol, t.endCol,
                 "tf-mismatched-close", "Expected '</" + open.tag + ">' but found '</" + t.tag + ">'."));
-                // Assumes the upper opening tag is closed anyway to avoid
-                // desynchronizing the entire stack because of a single malformed tag.
+
             }
 
             var matchIndex = -1;
@@ -162,7 +149,6 @@ function analyze(text) {
                 "tf-unclosed", "Missing closing tag for '<" + open.tag + ">'."));
         });
 
-        // --- Duplicate IDs ---
         var idPositions = {};
 
         tokens.forEach(function (t) {
@@ -186,7 +172,6 @@ function analyze(text) {
             }
         });
                 
-         // --- Classes: unknown / duplicated, per token ---
         tokens.forEach(function (t) {
             if (!t.attrs || t.attrs.class === undefined) { return; }
 
@@ -215,7 +200,6 @@ function analyze(text) {
             });
         });
 
-        // --- Generic empty attributes + large inline styles ---
         tokens.forEach(function (t) {
             if (!t.attrs) { return; }
 
@@ -249,7 +233,6 @@ function analyze(text) {
             }
         });
         
-        // --- Unknown var(--xxx) variables + detection info + deprecated syntax ---
         var lineOffset = 0;
         text.split("\n").forEach(function (lineText, idx) {
             var lineNo = idx + 1;
@@ -324,9 +307,6 @@ function checkAttrs(t, out) {
     });
 }
 
-// ------------------------------------------------------------------
-// Public API
-// ------------------------------------------------------------------
 var onDocumentChange;
 
 TF.editor.diagnostics = {
