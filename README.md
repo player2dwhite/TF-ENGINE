@@ -1,76 +1,225 @@
 # TF-Engine
 
-A pure CSS design system for Fandom wikis (MediaWiki), designed to
-build cards, panels, tables, forms, and other UI components
-directly in wikitext, using only `tf-*` classes.
+A modular UI framework for MediaWiki/Fandom that combines a lightweight CSS design system with an optional JavaScript engine.
 
+TF-Engine can be used as:
 
-## Repository structure
+* **CSS only** — zero JavaScript required.
+* **CSS + JS** — automatic components, themes, animations, runtime API, diagnostics, and future editor features.
 
-```
+---
+
+# Features
+
+* Pure CSS design system
+* Optional JavaScript engine
+* Dynamic themes
+* CSS variable bridge
+* Automatic component mounting
+* Runtime configuration API
+* Module system
+* Scroll animations
+* Storage API
+* Visual Editor (work in progress)
+* Diagnostics and statistics
+* Designed for MediaWiki and Fandom
+
+---
+
+# Repository structure
+
+```text
 TF-ENGINE/
 │
 ├── README.md
 ├── LICENSE
 │
 ├── css/
-│ ├── tf-engine.css ← compiled main file
-│ ├── variables.css ← :root, themes, colors
-│ ├── base.css ← reset, typography
-│ ├── components.css ← cards, buttons, tabs, panels...
-│ ├── utilities.css ← tf-flex, tf-mt, tf-p, etc.
-│ └── responsive.css ← media queries
+│   ├── tf-engine.css          ← Compiled stylesheet
+│   ├── variables.css          ← CSS variables & themes
+│   ├── base.css               ← Reset & typography
+│   ├── components.css         ← UI components
+│   ├── utilities.css          ← Utility classes
+│   └── responsive.css         ← Responsive rules
 │
-├── examples/
-│ ├── index.html
-│ ├── cards.html
-│ ├── tabs.html
-│ ├── infobox.html
-│ └── dashboard.html
+├── js/
+│   ├── tf-engine.js           ← Core engine
+│   ├── defaults.js            ← Factory defaults
+│   └── config.js              ← User configuration
+│   
+├── editor/
+│   ├── editor.js
+│   ├── diagnostics.js
+│   ├── highlighter.js
+│   ├── statistics.js
+│   ├── outline.js
+│   └── autocomplete.js
 │
 ├── docs/
-│ ├── components.md
-│ ├── variables.md
-│ └── usage.md
+│   ├── installation.md
+│   ├── configuration.md
+│   ├── components.md
+│   ├── variables.md
+│   └── usage.md
 │
-└── assets/ 
-└── preview.png
+├── examples/
+    ├── index.html
+    ├── cards.html
+    ├── tabs.html
+    ├── dashboard.html
+   └ ── infobox.html
+
 ```
 
-## Installation in Fandom
+---
 
-1. Copy the content of `css/tf-engine.css` (or the modules 
-individual, if you prefer to upload them separately) within 
-`MediaWiki:Common.css` or `MediaWiki:Wiki.css` of your wiki.
-2. Wrap your content in a `.tf-engine` container:
+# Installation
+
+## CSS only
+
+Copy the contents of `css/tf-engine.css` into:
+
+* `MediaWiki:Common.css`
+* `MediaWiki:Wiki.css`
+
+Then wrap your content:
 
 ```html
-<div class="tf-engine"> 
-<h2>Title</h2> 
-<div class="tf-card tf-accent"> 
-<span class="tf-badge tf-accent">New</span> 
-<p>Example content.</p> 
-</div>
+<div class="tf-engine">
+    ...
 </div>
 ```
 
-## CSS Modules
+---
 
-- **variables.css** — all custom properties (`:root`), settings 
-of `prefers-reduced-motion` and themes (`tf-theme-light`, `tf-theme-blue`, 
-`tf-theme-red`, `tf-theme-green`).
-- **base.css** — base styles for `.tf-engine` (background, shadow, radii) and the typography (`h1-h3`, `p`, `a`, `code`, `pre`, `blockquote`).
+## CSS + JavaScript
 
-- **components.css** — all components: cards, badges, tables, forms, tabs, modal, toast, infobox, stepper, FAB, etc.
+Load the JavaScript files in this order:
 
-- **utilities.css** — layout utilities (`tf-flex`, `tf-grid`), spacing, text, color, position, and other helpers in a single class.
+```text
+1. tf-engine.js
+2. defaults.js
+3. config.js
 
-- **responsive.css** — media queries for tablet/mobile and for printing.
+9. components/index.js
+10. component modules
 
-See `docs/usage.md`, `docs/variables.md`, and `docs/components.md` for more details.
+11. editor/editor.js
+12. editor/diagnostics.js
+13. editor/highlighter.js
+14. editor/statistics.js
+15. editor/outline.js
+16. editor/autocomplete.js
+```
 
-## License
+---
 
-TF-Engine is licensed under the MIT License.
+# Configuration
 
-See the [LICENSE](LICENSE) file for the full license text.
+TF-Engine uses four configuration levels.
+
+Priority (lowest → highest):
+
+```text
+defaults.js
+↓
+
+config.js
+
+↓
+
+data-* attributes
+
+↓
+
+TFEngine.setConfig()
+```
+
+Most users should only edit **config.js**.
+
+---
+
+# JavaScript modules
+
+## Core
+
+Responsible for:
+
+* initialization
+* configuration
+* events
+* runtime API
+* themes
+* storage
+* variables
+* module loader
+
+---
+
+## Components
+
+Each UI component is isolated in its own module.
+
+Examples:
+
+* Card
+* Panel
+* Badge
+* Alert
+* Tabs
+* Infobox
+
+Components register themselves automatically through the engine.
+
+---
+
+## Utilities
+
+Shared helper modules used by every component.
+
+Examples:
+
+* DOM helpers
+* Storage
+* Theme manager
+* Template helpers
+* Animation helpers
+
+---
+
+## Editor
+
+The editor is an optional module intended for MediaWiki editors.
+
+Current architecture:
+
+* editor.js
+* diagnostics.js
+* highlighter.js
+* statistics.js
+* outline.js
+* autocomplete.js
+
+Future versions aim to provide an editing experience similar to modern IDEs.
+
+---
+
+# Documentation
+
+Documentation is available inside the `docs/` directory.
+
+* Installation
+* Usage
+* Components
+* Variables
+* Configuration
+* JavaScript API
+* Editor
+
+---
+
+# License
+
+TF-Engine is released under the MIT License.
+
+See the LICENSE file for details.
