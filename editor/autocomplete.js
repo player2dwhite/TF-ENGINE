@@ -1,6 +1,4 @@
-/*! ---------------------------------------------------------------------
- * TF-ENGINE — editor/autocomplete.js
- * ---------------------------------------------------------------------*/
+/*! TF-ENGINE — editor/autocomplete.js*/
 (function (TF) {
     "use strict";
     if (!TF) { return; }
