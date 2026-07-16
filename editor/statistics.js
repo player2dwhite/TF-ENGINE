@@ -1,6 +1,4 @@
-/*!---------------------------------------------------------------------
- * TF-ENGINE — editor/statistics.js
- * ---------------------------------------------------------------------*/
+/*! TF-ENGINE — editor/statistics.js */
 (function (TF) {
     "use strict";
     if (!TF) { return; }
